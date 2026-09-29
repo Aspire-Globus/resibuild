@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import React, { useState } from "react";
 
 const Header = () => {
@@ -8,19 +10,19 @@ const Header = () => {
     <header className="site-header">
       <div className="site-header__inner">
 
-        <a href="/" className="site-header__logo">
+        <Link href="/" className="site-header__logo">
           <span className="site-header__logo-main">Resibuild</span>
           <span className="site-header__logo-events">Events</span>
-        </a>
+        </Link>
 
         <nav className={`site-header__nav ${menuOpen ? "is-open" : ""}`}>
-         <Link to="/about">About Us</Link>
+         <Link href="/about">About Us</Link>
 
-            <Link to="/events">Events</Link>
-          <a href="#podcast">Podcasts</a>
-          <a href="#cpd">CPD</a>
-          <a href="#insights">Insight</a>
-          <a href="#contact">Contact Us</a>
+            <Link href="/events">Events</Link>
+          <Link href="/#podcast">Podcasts</Link>
+          <Link href="/#cpd">CPD</Link>
+          <Link href="/#insights">Insight</Link>
+          <Link href="/#contact">Contact Us</Link>
         </nav>
 
         <div className="site-header__search">

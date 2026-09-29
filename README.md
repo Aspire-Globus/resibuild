@@ -1,16 +1,6 @@
-# Resibuild – Figma-style React Homepage
+# Resibuild Next.js Frontend
 
-This version was rebuilt to follow the uploaded Figma screenshot's visual direction:
-- white header
-- dark hero image
-- teal / dark teal brand areas
-- bright lime green content sections
-- 4-card inspiration area
-- podcast hero block
-- teal insight cards
-- lime resources section
-- project spotlight
-- testimonial and white footer
+This project was converted from the previous Vite React build to **Next.js App Router**.
 
 ## Run
 
@@ -19,22 +9,30 @@ npm install
 npm run dev
 ```
 
-## Important
+Open:
 
-The uploaded screenshot is only 159 × 659 px, so the exact original Figma photography cannot be extracted at production quality from it.
+- Home: http://localhost:3000
+- About: http://localhost:3000/about
+- Events: http://localhost:3000/events
 
-For now this project includes local SVG placeholders with the correct image positions and overall color direction.
+## Production
 
-Replace the files in:
+```bash
+npm run build
+npm start
+```
 
-`public/images/`
+## Structure
 
-with exported images from Figma while keeping the same filenames.
+```text
+app/
+  layout.jsx
+  page.jsx
+  about/page.jsx
+  events/page.jsx
+components/
+data/
+public/images/
+```
 
-## WordPress later
-
-Static homepage content is stored in:
-
-`src/data/homeData.js`
-
-This can later be replaced by ACF + WPGraphQL data without changing the page components.
+Vite-specific files, react-router-dom, node_modules, and Git history are not included.
