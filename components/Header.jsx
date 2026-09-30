@@ -19,10 +19,10 @@ const Header = () => {
          <Link href="/about">About Us</Link>
 
             <Link href="/events">Events</Link>
-          <Link href="/#podcast">Podcasts</Link>
+          <Link href="/podcasts">Podcasts</Link>
           <Link href="/#cpd">CPD</Link>
-          <Link href="/#insights">Insight</Link>
-          <Link href="/#contact">Contact Us</Link>
+          <Link href="/insights">Insight</Link>
+          <Link href="/contact">Contact Us</Link>
         </nav>
 
         <div className="site-header__search">

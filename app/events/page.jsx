@@ -5,6 +5,7 @@ import ClientTestimonial from "../../components/home/ClientTestimonial";
 import Partners from "../../components/common/Partners";
 
 import { homeData } from "../../data/homeData";
+import "./events.css";
 
 export const metadata = {
   title: "Events | Resibuild",
@@ -12,7 +13,7 @@ export const metadata = {
 
 export default function EventsPage() {
   return (
-    <main>
+    <main className="events-page">
       <EventsArchiveHero />
 
       <EventsArchiveGrid />

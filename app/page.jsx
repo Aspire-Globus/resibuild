@@ -6,8 +6,9 @@ import InspirationNews from "../components/home/InspirationNews";
 import IndustryUpdates from "../components/home/IndustryUpdates";
 import ExternalEnvelope from "../components/home/ExternalEnvelope";
 import ClientTestimonial from "../components/home/ClientTestimonial";
-
+import "./home.css";
 import { homeData } from "../data/homeData";
+
 
 export default function HomePage() {
   return (
