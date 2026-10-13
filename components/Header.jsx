@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -14,7 +13,7 @@ export default function Header({
     const handleScroll = () => {
       setIsSticky(window.scrollY > 40);
     };
-
+   
     handleScroll();
 
     window.addEventListener(
