@@ -1,43 +1,69 @@
-import React from "react";
+import Link from "next/link";
 
-const ThoughtLeaderCTA = () => {
+export default function ThoughtLeaderCTA({
+  data,
+}) {
+
+  if (!data) return null;
+
   return (
+
     <section className="thought-leader-cta">
 
-      <img
-        src="/images/thought-leader.jpg"
-        alt=""
-        className="thought-leader-cta__image"
-      />
+      <div className="thought-leader-cta__overlay" />
 
-      <div className="thought-leader-cta__overlay"></div>
+      <div className="thought-leader-cta__pattern" />
 
-      <div className="home-container thought-leader-cta__inner">
+      <div className="podcast-container">
+
         <div className="thought-leader-cta__content">
 
-          <h2>
-            Share your insight
-            <br />
-            as a thought
-            <br />
-            leader
-          </h2>
+          {data.heading && (
 
-          <p>
-            Join Resibuild conversations and share your knowledge,
-            experience and perspective with the construction industry.
-          </p>
+            <h2
+              dangerouslySetInnerHTML={{
+                __html: data.heading,
+              }}
+            />
 
-          <a href="#contact">
-            Contact Us
-            <span>→</span>
-          </a>
+          )}
+
+
+          {data.text && (
+
+            <div
+              className="thought-leader-cta__text"
+              dangerouslySetInnerHTML={{
+                __html: data.text,
+              }}
+            />
+
+          )}
+
+
+          {data.buttonText && (
+
+            <Link
+              href={data.buttonUrl || "#"}
+              className="thought-leader-cta__button"
+            >
+
+              {data.buttonText}
+
+              <span>
+                →
+              </span>
+
+            </Link>
+
+          )}
 
         </div>
+
       </div>
 
     </section>
-  );
-};
 
-export default ThoughtLeaderCTA;
+  );
+
+}

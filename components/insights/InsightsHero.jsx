@@ -1,37 +1,64 @@
-import React from "react";
+import Link from "next/link";
 
-const InsightsHero = () => {
+export default function InsightHero({ data }) {
+  if (!data) return null;
+
   return (
-    <section className="insights-page-hero">
-      <img
-        src="/images/insights-event-2.jpg"
-        alt=""
-        className="insights-page-hero__image"
-      />
+    <section className="insight-hero">
 
-      <div className="insights-page-hero__overlay"></div>
+      {data.video && (
+        <video
+          className="insight-hero__video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source
+            src={data.video}
+            type="video/mp4"
+          />
+        </video>
+      )}
 
-      <div className="home-container insights-page-hero__inner">
-        <div className="insights-page-hero__content">
-          <h1>
-            The Resibuild
-            <br />
-            Insights
-          </h1>
+      <div className="insight-hero__overlay" />
 
-          <p>
-            Since the initial industry thought leadership events in 2018,
-            Resibuild&apos;s events have been run both in prestigious venues.
-          </p>
+      <div className="insight-hero__pattern" />
 
-          <a href="#insights-list">
-            Find Out More
-            <span>→</span>
-          </a>
+      <div className="insight-container">
+        <div className="insight-hero__content">
+
+          {data.title && (
+            <h1
+              dangerouslySetInnerHTML={{
+                __html: data.title,
+              }}
+            />
+          )}
+
+          {data.description && (
+            <div
+              className="insight-hero__description"
+              dangerouslySetInnerHTML={{
+                __html: data.description,
+              }}
+            />
+          )}
+
+          {data.buttonText && (
+            <Link
+              href={data.buttonUrl || "#"}
+              className="insight-hero__button"
+            >
+              {data.buttonText}
+              <span>→</span>
+            </Link>
+          )}
+
         </div>
       </div>
+
     </section>
   );
-};
-
-export default InsightsHero;
+}

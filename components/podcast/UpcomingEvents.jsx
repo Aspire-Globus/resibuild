@@ -1,70 +1,126 @@
-import React from "react";
+import Link from "next/link";
 
-const upcomingEvents = [
-  {
-    title: "Beyond the Skyline: Bringing the Future to you",
-    image: "/images/event-archive-3.png",
-  },
-  {
-    title: "MMC Offsite, Competency and Sustainability",
-    image: "/images/event-archive-2.png",
-  },
-  {
-    title: "Navigating the Fast-Changing Landscape",
-    image: "/images/event-archive-1.png",
-  },
-];
+export default function UpcomingEvents({
+  events = [],
+}) {
 
-const UpcomingEvents = () => {
+  if (!events.length) return null;
+
   return (
-    <section className="upcoming-events">
-      <div className="home-container">
 
-        <div className="upcoming-events__heading">
+    <section className="podcast-upcoming">
+
+      <div className="podcast-container">
+
+
+        <div className="podcast-upcoming__header">
+
           <h2>
-            <span>Upcoming Events</span> - Finding
-            <br />
-            inspiration in every turn
+
+            <span>
+              Upcoming Events
+            </span>
+
+            {" "} - Finding inspiration in every turn
+
           </h2>
 
-          <a href="/events">
+
+          <Link
+            href="/events/"
+            className="podcast-upcoming__all"
+          >
+
             Find Out More
-            <span>→</span>
-          </a>
+
+            <span>
+              →
+            </span>
+
+          </Link>
+
         </div>
 
-        <div className="upcoming-events__grid">
 
-          {upcomingEvents.map((event, index) => (
-            <article className="upcoming-event-card" key={index}>
+        <div className="podcast-upcoming__grid">
 
-              <img
-                src={event.image}
-                alt={event.title}
-              />
+          {events.map((event) => (
 
-              <div className="upcoming-event-card__content">
-                <h3>{event.title}</h3>
+            <article
+              className="podcast-upcoming__card"
+              key={event.id}
+            >
 
-                <p>
-                  Resibuild Events teamed up with the Institute
-                  of Construction Management to bring...
-                </p>
 
-                <a href="#">
+              <Link
+                href={event.url || "#"}
+                className="podcast-upcoming__image"
+              >
+
+                {event.image && (
+
+                  <img
+                    src={event.image}
+                    alt={
+                      event.imageAlt ||
+                      event.title ||
+                      ""
+                    }
+                  />
+
+                )}
+
+              </Link>
+
+
+              <div className="podcast-upcoming__content">
+
+                <h3>
+
+                  <Link
+                    href={event.url || "#"}
+                  >
+                    {event.title}
+                  </Link>
+
+                </h3>
+
+
+                {event.excerpt && (
+
+                  <p>
+                    {event.excerpt}
+                  </p>
+
+                )}
+
+
+                <Link
+                  href={event.url || "#"}
+                  className="podcast-upcoming__read"
+                >
+
                   Read More
-                  <span>→</span>
-                </a>
+
+                  <span>
+                    →
+                  </span>
+
+                </Link>
+
               </div>
 
+
             </article>
+
           ))}
 
         </div>
 
       </div>
-    </section>
-  );
-};
 
-export default UpcomingEvents;
+    </section>
+
+  );
+
+}

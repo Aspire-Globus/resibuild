@@ -1,25 +1,31 @@
-import React from "react";
-
-const PodcastAvailable = () => {
+export default function PodcastAvailable() {
   return (
     <section className="podcast-available">
-      <div className="home-container podcast-available__inner">
-        <span>Podcast Available On</span>
 
-        <div className="podcast-available__platforms">
-          <a href="#" className="podcast-platform">
-            <span className="podcast-platform__youtube">▶</span>
-            YouTube
-          </a>
+      <div className="podcast-container">
 
-          <a href="#" className="podcast-platform">
-            <span className="podcast-platform__spotify">●</span>
-            Spotify
-          </a>
+        <div className="podcast-available__inner">
+
+          <span className="podcast-available__label">
+            Podcast Available On
+          </span>
+
+          <div className="podcast-available__platforms">
+
+            <span>
+              YouTube
+            </span>
+
+            <span>
+              Spotify
+            </span>
+
+          </div>
+
         </div>
+
       </div>
+
     </section>
   );
-};
-
-export default PodcastAvailable;
+}

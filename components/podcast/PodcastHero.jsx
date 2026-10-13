@@ -1,37 +1,66 @@
-import React from "react";
+import Link from "next/link";
 
-const PodcastHero = () => {
+export default function PodcastHero({ data }) {
+  if (!data) return null;
+
   return (
-    <section className="podcast-page-hero">
-      <img
-        className="podcast-page-hero__image"
-        src="/images/podcast-page-hero.jpg"
-        alt="Resibuild Podcast"
-      />
+    <section className="podcast-hero">
 
-      <div className="podcast-page-hero__overlay"></div>
+      {data.video && (
+        <video
+          className="podcast-hero__video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source
+            src={data.video}
+            type="video/mp4"
+          />
+        </video>
+      )}
 
-      <div className="home-container podcast-page-hero__inner">
-        <div className="podcast-page-hero__content">
-          <h1>
-            The Resibuild
-            <br />
-            Podcast
-          </h1>
+      <div className="podcast-hero__overlay" />
 
-          <p>
-            Since the initial industry thought leadership events in 2018,
-            Resibuild's events have been run both in prestigious venues.
-          </p>
+      <div className="podcast-hero__pattern" />
 
-          <a href="#podcast-insights">
-            Find Out More
-            <span>→</span>
-          </a>
+      <div className="podcast-container">
+
+        <div className="podcast-hero__content">
+
+          {data.title && (
+            <h1
+              dangerouslySetInnerHTML={{
+                __html: data.title,
+              }}
+            />
+          )}
+
+          {data.description && (
+            <div
+              className="podcast-hero__description"
+              dangerouslySetInnerHTML={{
+                __html: data.description,
+              }}
+            />
+          )}
+
+          {data.buttonText && (
+            <Link
+              href={data.buttonUrl || "#"}
+              className="podcast-hero__button"
+            >
+              {data.buttonText}
+              <span>→</span>
+            </Link>
+          )}
+
         </div>
+
       </div>
+
     </section>
   );
-};
-
-export default PodcastHero;
+}

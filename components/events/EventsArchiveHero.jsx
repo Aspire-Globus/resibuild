@@ -1,36 +1,61 @@
-import React from "react";
+import Link from "next/link";
 
-const EventsArchiveHero = () => {
+export default function EventsArchiveHero({ data }) {
+  if (!data) return null;
+
   return (
-    <section className="events-archive-hero">
+    <section className="events-hero">
 
-      <img
-        className="events-archive-hero__image"
-        src="/images/events-archive-hero.png"
-        alt=""
-      />
+      {data.video && (
+        <video
+          className="events-hero__video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source
+            src={data.video}
+            type="video/mp4"
+          />
+        </video>
+      )}
 
-      <div className="events-archive-hero__overlay"></div>
+      <div className="events-hero__overlay" />
 
-      <div className="home-container events-archive-hero__inner">
-        <div className="events-archive-hero__content">
+      <div className="events-hero__pattern" />
 
-          <h1>On Demand Content</h1>
+      <div className="events-container">
 
-          <p>
-            Since the initial industry thought leadership events in 2018,
-            Resibuild's events have been run both in prestigious venues.
-          </p>
+        <div className="events-hero__content">
 
-          <a href="#events-list">
-            Find Out More
-            <span>→</span>
-          </a>
+          {data.title && (
+            <h1>
+              {data.title}
+            </h1>
+          )}
+
+          {data.description && (
+            <p>
+              {data.description}
+            </p>
+          )}
+
+          {data.buttonText && (
+            <Link
+              href={data.buttonUrl || "#"}
+              className="events-hero__button"
+            >
+              {data.buttonText}
+              <span>→</span>
+            </Link>
+          )}
 
         </div>
+
       </div>
+
     </section>
   );
-};
-
-export default EventsArchiveHero;
+}

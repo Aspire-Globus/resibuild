@@ -1,153 +1,232 @@
 "use client";
 
-import React, { useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 
-const events = [
-  {
-    title: "Beyond the Skyline: Bringing the Future to you",
-    image: "/images/event-archive-1.png",
-  },
-  {
-    title: "MMC Offsite, Competency and Sustainability",
-    image: "/images/event-archive-2.png",
-  },
-  {
-    title: "Navigating the Fast-Changing Landscape",
-    image: "/images/event-archive-3.png",
-  },
-  {
-    title: "Beyond the Skyline: Bringing the Future to you",
-    image: "/images/event-archive-1.png",
-  },
-  {
-    title: "MMC Offsite, Competency and Sustainability",
-    image: "/images/event-archive-2.png",
-  },
-  {
-    title: "Navigating the Fast-Changing Landscape",
-    image: "/images/event-archive-3.png",
-  },
-  {
-    title: "Beyond the Skyline: Bringing the Future to you",
-    image: "/images/event-archive-1.png",
-  },
-  {
-    title: "MMC Offsite, Competency and Sustainability",
-    image: "/images/event-archive-2.png",
-  },
-  {
-    title: "Navigating the Fast-Changing Landscape",
-    image: "/images/event-archive-3.png",
-  },
-];
+const EVENTS_PER_PAGE = 12;
 
-const EventsArchiveGrid = () => {
+export default function EventsArchiveGrid({
+  title = "",
+  events = [],
+}) {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = 10;
+  const totalPages = Math.max(
+    1,
+    Math.ceil(events.length / EVENTS_PER_PAGE)
+  );
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const currentEvents = useMemo(() => {
+    const start =
+      (currentPage - 1) * EVENTS_PER_PAGE;
+
+    const end =
+      start + EVENTS_PER_PAGE;
+
+    return events.slice(start, end);
+  }, [events, currentPage]);
+
+  const changePage = (page) => {
+    if (page < 1 || page > totalPages) return;
+
+    setCurrentPage(page);
+
+    setTimeout(() => {
+      document
+        .querySelector(".events-archive")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }, 50);
+  };
+
+  const getPageNumbers = () => {
+    if (totalPages <= 7) {
+      return Array.from(
+        { length: totalPages },
+        (_, index) => index + 1
+      );
+    }
+
+    if (currentPage <= 4) {
+      return [1, 2, 3, 4, 5, "...", totalPages];
+    }
+
+    if (currentPage >= totalPages - 3) {
+      return [
+        1,
+        "...",
+        totalPages - 4,
+        totalPages - 3,
+        totalPages - 2,
+        totalPages - 1,
+        totalPages,
+      ];
+    }
+
+    return [
+      1,
+      "...",
+      currentPage - 1,
+      currentPage,
+      currentPage + 1,
+      "...",
+      totalPages,
+    ];
+  };
+
+  if (!events.length) {
+    return null;
+  }
 
   return (
-    <section
-      className="events-archive-list"
-      id="events-list"
-    >
-      <div className="home-container">
+    <section className="events-archive">
 
-        <div className="events-archive-list__heading">
-          <h2>
-            <span>Events On Demand</span> - Finding
-            <br />
-            inspiration in every turn
-          </h2>
-        </div>
+      <div className="events-container">
 
-        <div className="events-archive-grid">
-          {events.map((event, index) => (
+        {title && (
+          <div className="events-archive__heading">
+            <h2
+              dangerouslySetInnerHTML={{
+                __html: title,
+              }}
+            />
+          </div>
+        )}
+
+        <div className="events-archive__grid">
+
+          {currentEvents.map((event) => (
             <article
-              className="events-archive-card"
-              key={index}
+              className="events-archive__card"
+              key={event.id}
             >
-              <div className="events-archive-card__image">
-                <img
-                  src={event.image}
-                  alt={event.title}
-                />
-              </div>
 
-              <div className="events-archive-card__content">
-                <h3>{event.title}</h3>
+              <Link
+                href={event.url || "#"}
+                className="events-archive__image"
+              >
+                {event.image ? (
+                  <img
+                    src={event.image}
+                    alt={
+                      event.imageAlt ||
+                      event.title ||
+                      ""
+                    }
+                  />
+                ) : (
+                  <div className="events-archive__placeholder">
+                    Resibuild
+                  </div>
+                )}
+              </Link>
 
-                <p>
-                  Resibuild Events teamed up with the Institute
-                  of Construction Management to bring a...
-                </p>
+              <div className="events-archive__content">
 
-                <a href="#">
+                {event.title && (
+                  <h3>
+                    <Link href={event.url || "#"}>
+                      {event.title}
+                    </Link>
+                  </h3>
+                )}
+
+                {event.excerpt && (
+                  <p>
+                    {event.excerpt}
+                  </p>
+                )}
+
+                <Link
+                  href={event.url || "#"}
+                  className="events-archive__read-more"
+                >
                   Read More
-                  <span>→</span>
-                </a>
+
+                  <span>
+                    →
+                  </span>
+                </Link>
+
               </div>
+
             </article>
           ))}
+
         </div>
 
-
-        <div className="events-pagination">
-
-          <button
-            onClick={() =>
-              setCurrentPage((prev) =>
-                Math.max(prev - 1, 1)
-              )
-            }
-            disabled={currentPage === 1}
+        {totalPages > 1 && (
+          <nav
+            className="events-pagination"
+            aria-label="Events pagination"
           >
-            ‹
-          </button>
 
-          {[1, 2, 3, 4, 5].map((page) => (
             <button
-              key={page}
-              className={
-                currentPage === page
-                  ? "is-active"
-                  : ""
+              type="button"
+              className="events-pagination__button"
+              disabled={currentPage === 1}
+              onClick={() =>
+                changePage(currentPage - 1)
               }
-              onClick={() => setCurrentPage(page)}
+              aria-label="Previous page"
             >
-              {page}
+              ‹
             </button>
-          ))}
 
-          <span>...</span>
+            {getPageNumbers().map(
+              (page, index) =>
+                page === "..." ? (
+                  <span
+                    className="events-pagination__dots"
+                    key={`dots-${index}`}
+                  >
+                    ...
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    key={page}
+                    onClick={() =>
+                      changePage(page)
+                    }
+                    className={`events-pagination__number ${
+                      currentPage === page
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    {page}
+                  </button>
+                )
+            )}
 
-          <button
-            onClick={() => setCurrentPage(10)}
-            className={
-              currentPage === 10
-                ? "is-active"
-                : ""
-            }
-          >
-            10
-          </button>
+            <button
+              type="button"
+              className="events-pagination__button"
+              disabled={
+                currentPage === totalPages
+              }
+              onClick={() =>
+                changePage(currentPage + 1)
+              }
+              aria-label="Next page"
+            >
+              ›
+            </button>
 
-          <button
-            onClick={() =>
-              setCurrentPage((prev) =>
-                Math.min(prev + 1, totalPages)
-              )
-            }
-            disabled={currentPage === totalPages}
-          >
-            ›
-          </button>
-
-        </div>
+          </nav>
+        )}
 
       </div>
+
     </section>
   );
-};
-
-export default EventsArchiveGrid;   
+}

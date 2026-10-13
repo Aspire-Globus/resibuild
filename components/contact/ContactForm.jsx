@@ -1,131 +1,41 @@
-"use client";
 
-import React, { useState } from "react";
+import WordPressForm from "../forms/WordPressForm";
 
-const ContactForm = () => {
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
+export default function ContactForm({ data }) {
+  if (!data) return null;
 
-  const handleChange = (event) => {
-    setForm({
-      ...form,
-      [event.target.name]: event.target.value,
-    });
-  };
+  let cleanFormHtml = data.formHtml || "";
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  if (cleanFormHtml) {
+    const formMatch = cleanFormHtml.match(
+      /<form[\s\S]*?<\/form>/i
+    );
 
-    console.log("Contact form:", form);
-  };
+    if (formMatch) {
+      cleanFormHtml = formMatch[0];
+    }
+  }
 
   return (
-    <section className="contact-form-section" id="contact-form">
-      <div className="home-container">
+    <section className="contact-form-section">
+      <div className="contact-container">
+        {data.heading && (
+          <h2
+            className="contact-form-section__heading"
+            dangerouslySetInnerHTML={{
+              __html: data.heading,
+            }}
+          />
+        )}
 
-        <h2>
-          Resibuild: Leading Construction
-          <br />
-          Podcasts Since 2018
-        </h2>
-
-        <form
-          className="contact-form"
-          onSubmit={handleSubmit}
-        >
-          <div className="contact-form__grid">
-
-            <div className="contact-form__field">
-              <label htmlFor="firstName">
-                Full Name
-              </label>
-
-              <input
-                id="firstName"
-                type="text"
-                name="firstName"
-                placeholder="eg: John Doe"
-                value={form.firstName}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="contact-form__field">
-              <label htmlFor="lastName">
-                Full Name
-              </label>
-
-              <input
-                id="lastName"
-                type="text"
-                name="lastName"
-                placeholder="eg: John Doe"
-                value={form.lastName}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="contact-form__field">
-              <label htmlFor="email">
-                Full Name
-              </label>
-
-              <input
-                id="email"
-                type="email"
-                name="email"
-                placeholder="eg: John Doe"
-                value={form.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="contact-form__field">
-              <label htmlFor="phone">
-                Full Name
-              </label>
-
-              <input
-                id="phone"
-                type="text"
-                name="phone"
-                placeholder="eg: John Doe"
-                value={form.phone}
-                onChange={handleChange}
-              />
-            </div>
-
-          </div>
-
-          <div className="contact-form__field contact-form__field--message">
-            <label htmlFor="message">
-              Full Name
-            </label>
-
-            <textarea
-              id="message"
-              name="message"
-              value={form.message}
-              onChange={handleChange}
-            ></textarea>
-          </div>
-
-          <button type="submit">
-            Send Message
-            <span>→</span>
-          </button>
-        </form>
-
+        {cleanFormHtml && (
+          <WordPressForm
+            html={cleanFormHtml}
+            className="contact-form-wrapper"
+            successType="redirect"
+          />
+        )}
       </div>
     </section>
   );
-};
-
-export default ContactForm;
+}

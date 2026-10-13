@@ -1,37 +1,65 @@
-import React from "react";
+import Link from "next/link";
 
-const ContactHero = () => {
+export default function ContactHero({ data }) {
+  if (!data) return null;
+
   return (
-    <section className="contact-page-hero">
-      <img
-        className="contact-page-hero__image"
-        src="/images/contact-hero.jpg"
-        alt=""
-      />
+    <section className="contact-hero">
 
-      <div className="contact-page-hero__overlay"></div>
+      {data.video && (
+        <video
+          className="contact-hero__video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source
+            src={data.video}
+            type="video/mp4"
+          />
+        </video>
+      )}
 
-      <div className="home-container contact-page-hero__inner">
-        <div className="contact-page-hero__content">
-          <h1>
-            The Resibuild
-            <br />
-            Contact Us
-          </h1>
+      <div className="contact-hero__overlay" />
 
-          <p>
-            Since the initial industry thought leadership events in 2018,
-            Resibuild&apos;s events have been run both in prestigious venues.
-          </p>
+      <div className="contact-hero__pattern" />
 
-          <a href="#contact-form">
-            Find Out More
-            <span>→</span>
-          </a>
+      <div className="contact-container">
+        <div className="contact-hero__content">
+
+          {data.heading && (
+            <h1
+              dangerouslySetInnerHTML={{
+                __html: data.heading,
+              }}
+            />
+          )}
+
+          {data.description && (
+            <div
+              className="contact-hero__description"
+              dangerouslySetInnerHTML={{
+                __html: data.description,
+              }}
+            />
+          )}
+
+          {data.buttonText && (
+            <Link
+              href={data.buttonUrl || "#"}
+              className="contact-hero__button"
+            >
+              {data.buttonText}
+
+              <span>→</span>
+            </Link>
+          )}
+
         </div>
       </div>
+
     </section>
   );
-};
-
-export default ContactHero;
+}
