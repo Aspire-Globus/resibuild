@@ -1,33 +1,36 @@
-import React from "react";
+export default function ExternalEnvelope({ data }) {
+  if (!data) return null;
 
-const ExternalEnvelope = ({ data }) => {
   return (
     <section className="external-envelope">
-      <div className="home-container external-envelope__layout">
+      <div className="external-envelope__layout">
 
         <div className="external-envelope__visual">
-          <div className="external-envelope__shapes"></div>
-
-          <img
-            src={data.bookImage}
-            alt="The External Envelope Vision"
-          />
+          {data.bookImage && (
+            <img
+              src={data.bookImage}
+              alt={data.heading || "External Envelope"}
+            />
+          )}
         </div>
 
         <div className="external-envelope__content">
           <h2>{data.heading}</h2>
 
-          <p>{data.text}</p>
+          {data.text && (
+            <p>{data.text}</p>
+          )}
 
-          <a href={data.buttonUrl}>
-            {data.buttonLabel}
-            <span>→</span>
-          </a>
+          {data.buttonLabel && (
+            <a
+              href={data.buttonUrl || "#"}
+            >
+              {data.buttonLabel}
+            </a>
+          )}
         </div>
 
       </div>
     </section>
   );
-};
-
-export default ExternalEnvelope;
+}

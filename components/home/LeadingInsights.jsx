@@ -1,61 +1,64 @@
-import React from "react";
+export default function LeadingInsights({ data }) {
+  if (!data) return null;
 
-const LeadingInsights = ({ data }) => {
   return (
-    <>
-      <section className="leading-insights" id="about">
+    <section className="leading-insights">
+      <div className="leading-insights__inner">
+
         <div className="leading-insights__image">
           <img
             src={data.image}
-            alt="Resibuild construction event"
+            alt={data.title || ""}
           />
         </div>
 
         <div className="leading-insights__content">
           <div className="leading-insights__content-inner">
-            <h2>{data.heading}</h2>
 
-            <p>{data.description}</p>
+            <h2>{data.title}</h2>
 
-            <p>{data.descriptionTwo}</p>
+            {data.description && (
+              <div className="leading-insights__description">
+                {String(data.description)
+                  .split(/\n\s*\n/)
+                  .filter(Boolean)
+                  .map((paragraph, index) => (
+                    <p key={index}>
+                      {paragraph}
+                    </p>
+                  ))}
+              </div>
+            )}
 
             <div className="leading-insights__stats">
-              {data.stats.map((stat, index) => (
-                <div
-                  className="leading-insights__stat"
-                  key={index}
-                >
-                  <strong>{stat.number}</strong>
 
-                  <span>{stat.label}</span>
-                </div>
-              ))}
+              <div>
+                <strong>
+                  {data.establishedYear}
+                </strong>
+                <span>Established</span>
+              </div>
+
+              <div>
+                <strong>
+                  {data.cpdEvents}
+                </strong>
+                <span>CPD Events</span>
+              </div>
+
+              <div>
+                <strong>
+                  {data.peopleEducated}
+                </strong>
+                <span>People Educated</span>
+              </div>
+
             </div>
+
           </div>
         </div>
-      </section>
 
-      <section className="speaker-strip">
-        <div className="home-container speaker-strip__inner">
-          <h3>Speakers from our Events include</h3>
-
-          <div className="speaker-strip__logos">
-            <div className="speaker-logo">
-              SAPPHIRE.
-            </div>
-
-            <div className="speaker-logo">
-              SIDERISE
-            </div>
-
-            <div className="speaker-logo">
-              MYD
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
-};
-
-export default LeadingInsights;
+}
