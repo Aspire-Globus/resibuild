@@ -1,0 +1,229 @@
+/* =========================================
+   SPEAKER STRIP
+========================================= */
+
+.speaker-strip {
+  width: 100%;
+  background: var(--white);
+  border-bottom: 1px solid #e6e6e6;
+  overflow: hidden;
+}
+
+/* =========================================
+   FLEX CONTAINER
+========================================= */
+
+.speaker-strip__inner {
+  width: min(
+    var(--container),
+    var(--container-fallback)
+  );
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  gap: 80px;
+
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   HEADING
+========================================= */
+
+.speaker-strip__heading {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.speaker-strip__heading h3 {
+  margin: 0;
+  color: var(--text);
+}
+
+/* =========================================
+   SLIDER VIEWPORT
+========================================= */
+
+.speaker-strip__slider {
+  position: relative;
+
+  flex: 1 1 0;
+  min-width: 0;
+
+  overflow: hidden;
+
+  /* Smooth edge fade */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 5%,
+    black 95%,
+    transparent
+  );
+
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 5%,
+    black 95%,
+    transparent
+  );
+}
+
+/* =========================================
+   SLIDER TRACK
+========================================= */
+
+.speaker-strip__track {
+  display: flex;
+  align-items: center;
+
+  width: max-content;
+
+  will-change: transform;
+}
+
+/* =========================================
+   LOGO GROUP
+========================================= */
+
+.speaker-strip__group {
+  display: flex;
+  align-items: center;
+
+  flex: 0 0 auto;
+  gap: 30px;
+
+  padding-right: 30px;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   LOGO ITEM
+========================================= */
+
+.speaker-logo {
+  flex: 0 0 180px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 5px;
+  box-sizing: border-box;
+}
+
+.speaker-logo img {
+  display: block;
+
+  width: 100%;
+  max-width: 180px;
+  max-height: 55px;
+
+  height: auto;
+
+  object-fit: contain;
+}
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+  .speaker-strip__inner {
+    gap: 25px;
+  }
+
+  .speaker-logo {
+    flex-basis: 160px;
+  }
+
+  .speaker-strip__group {
+    gap: 24px;
+    padding-right: 24px;
+  }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+  .speaker-strip__inner {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 20px;
+    padding: 25px 0;
+  }
+
+  .speaker-strip__heading h3 {
+    text-align: center;
+  }
+
+  .speaker-strip__slider {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .speaker-logo {
+    flex-basis: 170px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+  .speaker-strip__inner {
+    padding: 20px 0;
+  }
+
+  .speaker-strip__heading h3 {
+    font-size: 22px;
+  }
+
+  .speaker-logo {
+    flex-basis: 145px;
+  }
+
+  .speaker-logo img {
+    max-height: 45px;
+  }
+
+  .speaker-strip__group {
+    gap: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+  .speaker-strip__inner {
+    padding: 18px 0;
+  }
+
+  .speaker-strip__heading h3 {
+    font-size: 20px;
+  }
+
+  .speaker-logo {
+    flex-basis: 130px;
+  }
+
+  .speaker-logo img {
+    max-height: 40px;
+  }
+
+  .speaker-strip__group {
+    gap: 15px;
+    padding-right: 15px;
+  }
+}

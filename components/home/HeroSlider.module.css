@@ -1,0 +1,341 @@
+/* =========================================
+   HERO SLIDER
+========================================= */
+
+.home-hero-slider {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  background: var(--teal-dark);
+}
+
+/* =========================================
+   SLIDER TRACK
+========================================= */
+
+.home-hero-slider__track {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s ease-in-out;
+  will-change: transform;
+}
+
+/* =========================================
+   SLIDE
+========================================= */
+
+.home-hero-slide {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* =========================================
+   BACKGROUND IMAGE / VIDEO
+========================================= */
+
+.home-hero-slide__image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* =========================================
+   BACKGROUND OVERLAY
+========================================= */
+
+.home-hero-slide__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.25) 35%,
+    rgba(0, 96, 114, 0.65) 75%,
+    rgba(0, 96, 114, 0.95) 100%
+  );
+}
+
+/* =========================================
+   CONTENT CONTAINER
+========================================= */
+
+.home-hero-slide__inner {
+  position: relative;
+  z-index: 2;
+
+  width: min(
+    var(--container),
+    var(--container-fallback)
+  );
+
+  height: 100%;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.home-hero-slide__content {
+  width: 100%;
+  max-width: 750px;
+}
+
+/* =========================================
+   HEADING
+========================================= */
+
+.home-hero-slide__content h1 {
+  margin: 0 0 28px;
+
+  color: var(--white);
+}
+
+/* =========================================
+   BUTTON WRAPPER
+========================================= */
+
+.home-hero-slide__buttons {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* =========================================
+   PRIMARY BUTTON
+========================================= */
+
+.hero-primary-button {
+  padding: 14px 30px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+
+  background: var(--lime);
+  color: var(--white);
+
+  font-family: var(--var-font-body);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+
+  transition: background 0.25s ease;
+}
+
+.hero-primary-button:hover {
+  background: var(--lime-hover);
+}
+
+.hero-button-arrow {
+  display: inline-block;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+}
+/* =========================================
+   SECONDARY BUTTON
+========================================= */
+
+.hero-secondary-button {
+  color: var(--white);
+
+  font-family: var(--var-font-body);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+
+  text-decoration: underline;
+  text-underline-offset: 4px;
+
+  transition: opacity 0.2s ease;
+}
+
+.hero-secondary-button:hover {
+  opacity: 0.8;
+}
+
+/* =========================================
+   SLIDER CONTROLS
+========================================= */
+
+.hero-slider-controls {
+  position: absolute;
+  z-index: 20;
+
+  left: 50%;
+  bottom: 30px;
+
+  width: min(
+    var(--container),
+    var(--container-fallback)
+  );
+
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  pointer-events: none;
+}
+
+.hero-slider-control {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid var(--white);
+  background: transparent;
+  color: var(--white);
+
+  font-family: var(--var-font-body);
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+  pointer-events: auto;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.hero-slider-control:hover {
+  background: var(--white);
+  color: var(--teal);
+}
+
+.hero-slider-control--previous {
+  background: var(--white);
+  color: var(--lime);
+}
+
+/* =========================================
+   RESPONSIVE — LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+  .home-hero-slide__content {
+    max-width: 700px;
+  }
+}
+
+/* =========================================
+   RESPONSIVE — TABLET
+========================================= */
+
+@media (max-width: 991px) {
+  .home-hero-slider {
+    height: 500px;
+  }
+
+  .home-hero-slide__content {
+    max-width: 600px;
+  }
+
+  .hero-slider-controls {
+    bottom: 25px;
+  }
+}
+
+/* =========================================
+   RESPONSIVE — MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+  .home-hero-slider {
+    height: 500px;
+  }
+
+  .home-hero-slide__image {
+    object-position: 64% center;
+  }
+
+  .home-hero-slide__overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.45) 0%,
+      rgba(0, 0, 0, 0.5) 35%,
+      rgba(0, 96, 114, 0.75) 75%,
+      rgba(0, 96, 114, 0.95) 100%
+    );
+  }
+
+  .home-hero-slide__content {
+    max-width: 100%;
+  }
+
+  .home-hero-slide__content h1 {
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .home-hero-slide__buttons {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .hero-primary-button {
+    min-width: 160px;
+    min-height: 44px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+
+  .hero-secondary-button {
+    font-size: 14px;
+  }
+
+  .hero-slider-controls {
+    bottom: 20px;
+  }
+
+  .hero-slider-control {
+    width: 32px;
+    height: 32px;
+    font-size: 21px;
+  }
+}
+
+/* =========================================
+   RESPONSIVE — SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+  .home-hero-slider {
+    height: 520px;
+  }
+
+  .home-hero-slide__content h1 {
+    font-size: 36px;
+  }
+
+  .home-hero-slide__buttons {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}

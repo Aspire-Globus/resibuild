@@ -1,7 +1,7 @@
 import "./globals.css";
 
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/global/header/Header";
+import Footer from "../components/global/footer/Footer";
 
 import { fetchGraphQL } from "../lib/graphql";
 import { GLOBAL_QUERY } from "../lib/queries/global";
@@ -37,6 +37,9 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet"   href="https://s.w.org/wp-includes/css/dashicons.css" />
+      </head>
       <body>
         <Header
           data={header}

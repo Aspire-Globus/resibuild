@@ -1,61 +1,88 @@
 import Link from "next/link";
+import styles from "./ThoughtLeaderCTA.module.css";
 
-export default function ThoughtLeaderCTA({
-  data,
-}) {
-
+export default function ThoughtLeaderCTA({ data }) {
   if (!data) return null;
 
+  const {
+    heading = "",
+    text = "",
+    buttonText = "",
+    buttonUrl = "#",
+    backgroundImage = "",
+  } = data;
+
   return (
+    <section className={styles["thought-leader-cta"]}>
 
-    <section className="thought-leader-cta">
+      {/* BACKGROUND IMAGE */}
 
-      <div className="thought-leader-cta__overlay" />
+      {backgroundImage && (
+        <div
+          className={styles["thought-leader-cta__background"]}
+          aria-hidden="true"
+        >
+          <img
+            src={backgroundImage}
+            alt=""
+            loading="lazy"
+          />
+        </div>
+      )}
 
-      <div className="thought-leader-cta__pattern" />
+      {/* CONTENT CONTAINER */}
 
-      <div className="podcast-container">
+      <div className={styles["thought-leader-cta__container"]}>
 
-        <div className="thought-leader-cta__content">
+        <div className={styles["thought-leader-cta__content"]}>
 
-          {data.heading && (
+          {/* HEADING */}
 
+          {heading && (
             <h2
+              className={styles["thought-leader-cta__heading"]}
               dangerouslySetInnerHTML={{
-                __html: data.heading,
+                __html: heading,
               }}
             />
-
           )}
 
+          {/* DESCRIPTION */}
 
-          {data.text && (
-
-            <div
-              className="thought-leader-cta__text"
+          {text && (
+            <p
+              className={styles["thought-leader-cta__text"]}
               dangerouslySetInnerHTML={{
-                __html: data.text,
+                __html: text,
               }}
             />
-
           )}
 
+          {/* BUTTON */}
 
-          {data.buttonText && (
-
+          {buttonText && (
             <Link
-              href={data.buttonUrl || "#"}
-              className="thought-leader-cta__button"
+              href={buttonUrl}
+              className={styles["thought-leader-cta__button"]}
             >
+              <span>{buttonText}</span>
 
-              {data.buttonText}
-
-              <span>
-                →
-              </span>
-
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 12H20M20 12L14 6M20 12L14 18"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </Link>
-
           )}
 
         </div>
@@ -63,7 +90,5 @@ export default function ThoughtLeaderCTA({
       </div>
 
     </section>
-
   );
-
 }

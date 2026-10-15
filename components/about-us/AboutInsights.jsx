@@ -1,54 +1,67 @@
+import styles from "./AboutInsights.module.css";
+
 export default function AboutInsights({ data }) {
   if (!data) return null;
 
-  return (
-    <section className="about-insights">
-      <div className="home-container">
+  const stats = [
+    {
+      value: data.establishedYear,
+      label: "Established",
+    },
+    {
+      value: data.cpdEvents,
+      label: "CPD Events",
+    },
+    {
+      value: data.peopleEducated,
+      label: "People Educated",
+    },
+  ];
 
-        <div className="about-insights__content">
+  return (
+    <section className={styles["about-insights"]}>
+      <div className={styles["about-insights__container"]}>
+
+        {/* HEADING + DESCRIPTION */}
+        <div className={styles["about-insights__content"]}>
           {data.heading && (
-            <h2>
+            <h2 className={styles["about-insights__heading"]}>
               {data.heading}
             </h2>
           )}
 
           {data.description && (
-            <div className="about-insights__description">
+            <div className={styles["about-insights__description"]}>
               {String(data.description)
                 .split(/\n\s*\n/)
                 .filter(Boolean)
                 .map((paragraph, index) => (
-                  <p key={index}>
-                    {paragraph}
-                  </p>
+                  <p key={index}>{paragraph.trim()}</p>
                 ))}
             </div>
           )}
         </div>
 
-        <div className="about-insights__stats">
+        {/* STATS */}
+        <div className={styles["about-insights__stats"]}>
+          {stats.map((stat, index) => (
+            <div
+              className={styles["about-insights__stat"]}
+              key={index}
+            >
+              <strong
+                className={styles["about-insights__stat-value"]}
+              >
+                {stat.value}
+              </strong>
 
-          <div className="about-insights__stat">
-            <strong>
-              {data.establishedYear}
-            </strong>
-            <span>Established</span>
-          </div>
-
-          <div className="about-insights__stat">
-            <strong>
-              {data.cpdEvents}
-            </strong>
-            <span>CPD Events</span>
-          </div>
-
-          <div className="about-insights__stat">
-            <strong>
-              {data.peopleEducated}
-            </strong>
-            <span>People Educated</span>
-          </div>
-
+              <span
+                className={styles["about-insights__stat-label"]}
+              >
+                {stat.label}
+              </span>
+            </div>
+          ))}
         </div>
 
       </div>

@@ -1,65 +1,107 @@
 import Link from "next/link";
+import styles from "./ContactHero.module.css";
+
+function decodeHtml(html = "") {
+  if (!html) return "";
+
+  return String(html)
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&");
+}
+
+function ArrowIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M5 12H19M13 6L19 12L13 18"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export default function ContactHero({ data }) {
   if (!data) return null;
 
-  return (
-    <section className="contact-hero">
+  const {
+    video = "",
+    heading = "",
+    description = "",
+    buttonText = "",
+    buttonUrl = "#",
+  } = data;
 
-      {data.video && (
+  return (
+    <section className={styles["contact-hero"]}>
+      {video && (
         <video
-          className="contact-hero__video"
+          className={styles["contact-hero__video"]}
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
+          aria-hidden="true"
         >
-          <source
-            src={data.video}
-            type="video/mp4"
-          />
+          <source src={video} type="video/mp4" />
         </video>
       )}
 
-      <div className="contact-hero__overlay" />
+      <div
+        className={styles["contact-hero__overlay"]}
+        aria-hidden="true"
+      />
 
-      <div className="contact-hero__pattern" />
+      <div
+        className={styles["contact-hero__pattern"]}
+        aria-hidden="true"
+      />
 
-      <div className="contact-container">
-        <div className="contact-hero__content">
-
-          {data.heading && (
+      <div className={styles["contact-hero__container"]}>
+        <div className={styles["contact-hero__content"]}>
+          {heading && (
             <h1
+              className={styles["contact-hero__title"]}
               dangerouslySetInnerHTML={{
-                __html: data.heading,
+                __html: decodeHtml(heading),
               }}
             />
           )}
 
-          {data.description && (
-            <div
-              className="contact-hero__description"
+          {description && (
+            <p
+              className={styles["contact-hero__description"]}
               dangerouslySetInnerHTML={{
-                __html: data.description,
+                __html: decodeHtml(description),
               }}
             />
           )}
 
-          {data.buttonText && (
+          {buttonText && (
             <Link
-              href={data.buttonUrl || "#"}
-              className="contact-hero__button"
+              href={buttonUrl || "#"}
+              className={styles["contact-hero__button"]}
             >
-              {data.buttonText}
-
-              <span>→</span>
+              <span>{buttonText}</span>
+              <ArrowIcon />
             </Link>
           )}
-
         </div>
       </div>
-
     </section>
   );
 }

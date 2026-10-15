@@ -1,0 +1,252 @@
+/* =========================================
+   ABOUT INSIGHTS SECTION
+========================================= */
+
+.about-insights {
+  width: 100%;
+  padding: 80px 0;
+
+  background-color: var(--teal);
+  color: var(--white);
+
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   CONTAINER
+========================================= */
+
+.about-insights__container {
+  width: min(
+    var(--container),
+    var(--container-fallback)
+  );
+
+  margin: 0 auto;
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.about-insights__content {
+  max-width: 900px;
+  margin: 0 auto 30px;
+}
+
+/* =========================================
+   HEADING
+   FONT SIZE COMES FROM GLOBAL CSS
+========================================= */
+
+.about-insights__heading {
+  max-width: 750px;
+  margin: 0 auto 20px;
+
+  color: var(--white);
+  text-align: center;
+}
+
+/* =========================================
+   DESCRIPTION
+   FONT SIZE COMES FROM GLOBAL CSS
+========================================= */
+
+.about-insights__description {
+  max-width: 900px;
+  margin: 0 auto;
+
+  color: var(--white);
+  text-align: center;
+}
+
+.about-insights__description p {
+  margin: 0 0 14px;
+  color: inherit;
+}
+
+.about-insights__description p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================
+   STATS WRAPPER
+========================================= */
+
+.about-insights__stats {
+  width: min(100%, 750px);
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 45px;
+
+  margin: 0 auto;
+}
+
+/* =========================================
+   INDIVIDUAL STAT
+========================================= */
+
+.about-insights__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-width: 0;
+  text-align: center;
+}
+
+/* =========================================
+   STATS NUMBER
+   FONT SIZE ONLY FOR THIS SECTION
+========================================= */
+
+.about-insights__stat-value {
+  display: block;
+
+  color: var(--white);
+
+  font-family: var(--var-font-heading);
+  font-size: clamp(32px, 3vw, 64px);
+  font-weight: 500;
+line-height: 1.1;
+letter-spacing: -0.5px;
+overflow-wrap: anywhere;
+}
+
+/* =========================================
+   STATS LABEL
+   FONT SIZE ONLY FOR THIS SECTION
+========================================= */
+
+.about-insights__stat-label {
+  display: block;
+
+  margin-top: 7px;
+
+  color: var(--white);
+
+  font-family: var(--var-font-body);
+  font-size: clamp(14px, 1.2vw, 18px);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+  .about-insights {
+    padding: 60px 0;
+  }
+
+  .about-insights__content {
+    max-width: 850px;
+  }
+
+  .about-insights__stats {
+    gap: 35px;
+  }
+  .about-insights__stat-value {
+    font-size: 36px;
+  }
+  .about-insights__stat-label {
+    font-size: 13px;
+  }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+  .about-insights {
+    padding: 50px 0;
+  }
+
+  .about-insights__content {
+    max-width: 750px;
+  }
+
+  .about-insights__stats {
+    max-width: 650px;
+    gap: 25px;
+  }
+
+  .about-insights__stat-value {
+    font-size: 34px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+  .about-insights {
+    padding: 40px 0;
+  }
+
+  .about-insights__content {
+    margin-bottom: 30px;
+  }
+
+  .about-insights__heading {
+    margin-bottom: 18px;
+  }
+
+  .about-insights__stats {
+    gap: 15px;
+  }
+
+  .about-insights__stat-value {
+    font-size: 32px;
+  }
+
+  .about-insights__stat-label {
+    margin-top: 6px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+  .about-insights__content {
+    margin-bottom: 25px;
+  }
+
+  .about-insights__stats {
+    gap: 10px;
+  }
+
+  .about-insights__stat-value {
+    font-size: 26px;
+  }
+
+  .about-insights__stat-label {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+}
+
+/* =========================================
+   EXTRA SMALL MOBILE
+========================================= */
+
+@media (max-width: 359px) {
+  .about-insights__stats {
+    gap: 6px;
+  }
+
+  .about-insights__stat-value {
+    font-size: 23px;
+  }
+  .about-insights__stat-value {
+    font-size: 24px;
+  }
+}

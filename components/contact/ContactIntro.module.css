@@ -1,0 +1,271 @@
+.contact-intro {
+  position: relative;
+  width: 100%;
+  padding: 65px 0;
+  background-color: var(--teal);
+  box-sizing: border-box;
+}
+
+.contact-intro__container {
+  width: min(var(--container), var(--container-fallback));
+  margin: 0 auto;
+}
+
+.contact-intro__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.contact-intro__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.contact-intro__title {
+  margin: 0 0 20px;
+  color: var(--white);
+  font-family: var(--var-font-heading);
+}
+
+.contact-intro__title :global(span) {
+  color: var(--white);
+}
+
+.contact-intro__text {
+  width: 100%;
+  color: var(--white);
+  font-family: var(--var-font-body);
+  line-height: 1.6;
+}
+
+.contact-intro__text :global(p) {
+  margin: 0 0 15px;
+  color: inherit;
+  line-height: inherit;
+}
+
+.contact-intro__text :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.contact-intro__text :global(a) {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-intro__email {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  color: var(--lime);
+}
+
+.contact-intro__email svg {
+  flex-shrink: 0;
+  color: var(--lime);
+}
+
+.contact-intro__email a {
+  color: var(--white);
+  font-family: var(--var-font-body);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+  transition: color 0.3s ease;
+}
+
+.contact-intro__email a:hover {
+  color: var(--lime);
+}
+
+.contact-intro__social {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.contact-intro__social-title {
+  margin: 0;
+  color: var(--white);
+  font-family: var(--var-font-heading);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.contact-intro__linkedin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: #0a66c2;
+  color: var(--white);
+  text-decoration: none;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.contact-intro__linkedin:hover {
+  background-color: #084f96;
+  transform: translateY(-2px);
+}
+
+.contact-intro__linkedin svg {
+  width: 17px;
+  height: 17px;
+}
+
+.contact-intro__image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.contact-intro__image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.contact-intro__email a:focus-visible,
+.contact-intro__linkedin:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 4px;
+}
+
+@media (max-width: 1199px) {
+  .contact-intro {
+    padding: 60px 0;
+  }
+
+  .contact-intro__grid {
+    gap: 30px;
+  }
+
+  .contact-intro__title {
+    margin-bottom: 18px;
+  }
+
+  .contact-intro__email a {
+    font-size: 18px;
+  }
+
+  .contact-intro__social-title {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 991px) {
+  .contact-intro {
+    padding: 50px 0;
+  }
+
+  .contact-intro__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: 25px;
+  }
+
+  .contact-intro__title {
+    margin-bottom: 15px;
+  }
+
+  .contact-intro__email {
+    margin-top: 15px;
+  }
+
+  .contact-intro__email a {
+    font-size: 16px;
+  }
+
+  .contact-intro__social {
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-intro {
+    padding: 40px 0;
+  }
+
+  .contact-intro__grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .contact-intro__content {
+    width: 100%;
+  }
+
+  .contact-intro__title {
+    margin-bottom: 15px;
+  }
+
+  .contact-intro__email {
+    margin-top: 15px;
+  }
+
+  .contact-intro__email a {
+    font-size: 16px;
+  }
+
+  .contact-intro__social-title {
+    font-size: 18px;
+  }
+
+  .contact-intro__image {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-intro__grid {
+    gap: 25px;
+  }
+
+  .contact-intro__email {
+    gap: 8px;
+  }
+
+  .contact-intro__email svg {
+    width: 26px;
+    height: 22px;
+  }
+
+  .contact-intro__email a {
+    font-size: 15px;
+  }
+
+  .contact-intro__social {
+    margin-top: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-intro__email a,
+  .contact-intro__linkedin {
+    transition: none;
+  }
+
+  .contact-intro__linkedin:hover {
+    transform: none;
+  }
+}

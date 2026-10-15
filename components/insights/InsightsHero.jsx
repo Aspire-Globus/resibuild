@@ -1,62 +1,118 @@
 import Link from "next/link";
+import styles from "./InsightsHero.module.css";
 
-export default function InsightHero({ data }) {
+export default function InsightsHero({ data }) {
   if (!data) return null;
 
-  return (
-    <section className="insight-hero">
+  const {
+    video = "",
+    title = "",
+    description = "",
+    buttonText = "",
+    buttonUrl = "#",
+  } = data;
 
-      {data.video && (
+  return (
+    <section className={styles["insight-hero"]}>
+
+      {/* =====================================
+          BACKGROUND VIDEO
+      ===================================== */}
+
+      {video && (
         <video
-          className="insight-hero__video"
+          className={styles["insight-hero__video"]}
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
+          aria-hidden="true"
         >
           <source
-            src={data.video}
+            src={video}
             type="video/mp4"
           />
         </video>
       )}
 
-      <div className="insight-hero__overlay" />
+      {/* =====================================
+          GRADIENT OVERLAY
+      ===================================== */}
 
-      <div className="insight-hero__pattern" />
+      <div
+        className={styles["insight-hero__overlay"]}
+        aria-hidden="true"
+      />
 
-      <div className="insight-container">
-        <div className="insight-hero__content">
+      {/* =====================================
+          PATTERN
+      ===================================== */}
 
-          {data.title && (
+      <div
+        className={styles["insight-hero__pattern"]}
+        aria-hidden="true"
+      />
+
+      {/* =====================================
+          CONTENT CONTAINER
+      ===================================== */}
+
+      <div className={styles["insight-hero__container"]}>
+
+        <div className={styles["insight-hero__content"]}>
+
+          {/* HEADING */}
+
+          {title && (
             <h1
+              className={styles["insight-hero__title"]}
               dangerouslySetInnerHTML={{
-                __html: data.title,
+                __html: title,
               }}
             />
           )}
 
-          {data.description && (
-            <div
-              className="insight-hero__description"
+          {/* DESCRIPTION */}
+
+          {description && (
+            <p
+              className={styles["insight-hero__description"]}
               dangerouslySetInnerHTML={{
-                __html: data.description,
+                __html: description,
               }}
             />
           )}
 
-          {data.buttonText && (
+          {/* CTA BUTTON */}
+
+          {buttonText && (
             <Link
-              href={data.buttonUrl || "#"}
-              className="insight-hero__button"
+              href={buttonUrl || "#"}
+              className={styles["insight-hero__button"]}
             >
-              {data.buttonText}
-              <span>→</span>
+              <span>{buttonText}</span>
+
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12H19M13 6L19 12L13 18"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </Link>
           )}
 
         </div>
+
       </div>
 
     </section>

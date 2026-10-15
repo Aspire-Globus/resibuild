@@ -1,0 +1,464 @@
+/* =========================================
+   UPCOMING EVENTS SECTION
+========================================= */
+
+.podcast-upcoming {
+  position: relative;
+  width: 100%;
+  padding: 80px 0;
+  background-color: var(--white);
+  box-sizing: border-box;
+}
+
+/* =========================================
+   CONTAINER
+========================================= */
+
+.podcast-upcoming__container {
+  width: min(
+    var(--container),
+    var(--container-fallback)
+  );
+  margin: 0 auto;
+}
+
+/* =========================================
+   SECTION HEADER
+========================================= */
+
+.podcast-upcoming__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 35px;
+}
+
+/* =========================================
+   SECTION HEADING
+========================================= */
+
+.podcast-upcoming__heading {
+  flex: 1;
+  width: 100%;
+  max-width: 850px;
+  min-width: 0;
+}
+
+.podcast-upcoming__heading h2 {
+  margin: 0;
+  color: var(--teal);
+  font-family: var(--var-font-heading);
+  line-height: 1.2;
+}
+
+/* GREEN HEADING TEXT */
+
+.podcast-upcoming__heading h2 span {
+  color: var(--lime);
+}
+
+/* =========================================
+   FIND OUT MORE BUTTON
+========================================= */
+
+.podcast-upcoming__all {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  flex-shrink: 0;
+
+  min-height: 48px;
+  padding: 12px 24px;
+
+  background-color: var(--lime);
+  color: var(--white);
+
+  font-family: var(--var-font-body);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+
+  box-sizing: border-box;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.podcast-upcoming__all:hover {
+  background-color: var(--lime-hover);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.podcast-upcoming__all svg {
+  flex-shrink: 0;
+}
+
+/* =========================================
+   EVENTS GRID
+========================================= */
+
+.podcast-upcoming__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 25px;
+  width: 100%;
+}
+
+/* =========================================
+   EVENT CARD
+========================================= */
+
+.podcast-upcoming__card {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  height: 100%;
+
+  background-color: var(--off-white);
+  overflow: hidden;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* =========================================
+   DESKTOP: HIDE FOURTH EVENT
+========================================= */
+
+.podcast-upcoming__card:nth-child(4) {
+  display: none;
+}
+
+/* =========================================
+   CARD HOVER
+========================================= */
+
+.podcast-upcoming__card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================
+   EVENT IMAGE
+========================================= */
+
+.podcast-upcoming__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
+  background-color: var(--light-gray);
+}
+
+.podcast-upcoming__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition: transform 0.5s ease;
+}
+
+/* IMAGE HOVER */
+
+.podcast-upcoming__card:hover
+.podcast-upcoming__image img {
+  transform: scale(1.05);
+}
+
+/* =========================================
+   IMAGE PLACEHOLDER
+========================================= */
+
+.podcast-upcoming__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: var(--teal);
+  color: var(--white);
+
+  font-family: var(--var-font-heading);
+  font-weight: 700;
+}
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.podcast-upcoming__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  padding: 22px 20px 20px;
+
+  box-sizing: border-box;
+}
+
+/* =========================================
+   EVENT TITLE
+========================================= */
+
+.podcast-upcoming__title {
+  margin: 0 0 12px;
+  color: var(--teal);
+  font-size: 26px;
+}
+
+.podcast-upcoming__title a {
+  color: inherit;
+  text-decoration: none;
+
+  transition: color 0.3s ease;
+}
+
+.podcast-upcoming__title a:hover {
+  color: var(--lime);
+}
+
+/* =========================================
+   EVENT EXCERPT
+========================================= */
+
+.podcast-upcoming__excerpt {
+  display: -webkit-box;
+
+  margin: 0 0 20px;
+
+  color: var(--text);
+  line-height: 1.55;
+
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+/* =========================================
+   READ MORE
+========================================= */
+
+.podcast-upcoming__read {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+  gap: 10px;
+
+  margin-top: auto;
+
+  color: var(--lime);
+
+  font-family: var(--var-font-body);
+  font-weight: 600;
+  text-decoration: none;
+
+  transition:
+    color 0.3s ease,
+    gap 0.3s ease;
+}
+
+.podcast-upcoming__read svg {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.podcast-upcoming__read:hover {
+  color: var(--teal);
+}
+
+.podcast-upcoming__read:hover svg {
+  transform: translateX(5px);
+}
+
+/* =========================================
+   LAPTOP - 1199px
+========================================= */
+
+@media (max-width: 1199px) {
+  .podcast-upcoming {
+    padding: 60px 0;
+  }
+
+  .podcast-upcoming__header {
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+
+  .podcast-upcoming__grid {
+    gap: 20px;
+  }
+
+  .podcast-upcoming__content {
+    padding: 20px 18px;
+  }
+
+  .podcast-upcoming__title {
+    font-size: 22px;
+  }
+}
+
+/* =========================================
+   TABLET - 991px
+   SHOW ALL FOUR EVENTS
+========================================= */
+
+@media (max-width: 991px) {
+  .podcast-upcoming {
+    padding: 50px 0;
+  }
+
+  .podcast-upcoming__header {
+    gap: 25px;
+    margin-bottom: 25px;
+  }
+
+  .podcast-upcoming__heading {
+    max-width: 550px;
+  }
+
+  .podcast-upcoming__all {
+    gap: 15px;
+    padding: 12px 18px;
+  }
+
+  .podcast-upcoming__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  /* SHOW FOURTH EVENT */
+
+  .podcast-upcoming__card:nth-child(4) {
+    display: flex;
+  }
+
+  .podcast-upcoming__content {
+    padding: 20px;
+  }
+
+  .podcast-upcoming__title {
+    font-size: 20px;
+  }
+}
+
+/* =========================================
+   MOBILE - 767px
+========================================= */
+
+@media (max-width: 767px) {
+  .podcast-upcoming {
+    padding: 40px 0;
+  }
+
+  .podcast-upcoming__header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .podcast-upcoming__heading {
+    max-width: 100%;
+  }
+
+  .podcast-upcoming__all {
+    min-height: 44px;
+    padding: 10px 20px;
+  }
+
+  .podcast-upcoming__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* KEEP ALL FOUR EVENTS VISIBLE */
+
+  .podcast-upcoming__card:nth-child(4) {
+    display: flex;
+  }
+
+  .podcast-upcoming__image {
+    aspect-ratio: 16 / 9;
+  }
+
+  .podcast-upcoming__content {
+    padding: 20px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE - 480px
+========================================= */
+
+@media (max-width: 480px) {
+  .podcast-upcoming__header {
+    gap: 18px;
+  }
+
+  .podcast-upcoming__grid {
+    gap: 18px;
+  }
+
+  .podcast-upcoming__content {
+    padding: 18px 15px;
+  }
+
+  .podcast-upcoming__title {
+    margin-bottom: 10px;
+  }
+
+  .podcast-upcoming__excerpt {
+    margin-bottom: 18px;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+.podcast-upcoming__image:focus-visible,
+.podcast-upcoming__all:focus-visible,
+.podcast-upcoming__read:focus-visible,
+.podcast-upcoming__title a:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .podcast-upcoming__card,
+  .podcast-upcoming__image img,
+  .podcast-upcoming__all,
+  .podcast-upcoming__read,
+  .podcast-upcoming__read svg {
+    transition: none;
+  }
+
+  .podcast-upcoming__card:hover,
+  .podcast-upcoming__all:hover,
+  .podcast-upcoming__card:hover
+  .podcast-upcoming__image img,
+  .podcast-upcoming__read:hover svg {
+    transform: none;
+  }
+}

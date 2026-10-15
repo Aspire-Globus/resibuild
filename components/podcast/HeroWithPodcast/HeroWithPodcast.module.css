@@ -1,0 +1,502 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 560px;
+  padding: 95px 0 160px;
+  background: var(--lime);
+  color: #fff;
+}
+
+.hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  overflow: hidden;
+}
+
+.hero__video,
+.hero__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__image {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(
+    90deg,
+    rgba(110, 174, 0, 0.95) 0%,
+    rgba(110, 174, 0, 0.78) 36%,
+    rgba(110, 174, 0, 0.3) 72%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+}
+
+.hero__pattern {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero__pattern span {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  background: rgba(122, 184, 0, 0.17);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.hero__pattern span:nth-child(1) {
+  top: 0;
+  left: 0;
+  transform: rotate(30deg);
+}
+
+.hero__pattern span:nth-child(2) {
+  top: 130px;
+  left: 180px;
+  transform: rotate(140deg);
+}
+
+.hero__pattern span:nth-child(3) {
+  bottom: 0;
+  left: 60px;
+  transform: rotate(75deg);
+}
+
+.hero__pattern span:nth-child(4) {
+  top: 50px;
+  left: 420px;
+  transform: rotate(210deg);
+}
+
+.hero__pattern span:nth-child(5) {
+  bottom: 90px;
+  left: 350px;
+  transform: rotate(110deg);
+}
+
+.hero__pattern span:nth-child(6) {
+  bottom: 0;
+  left: 600px;
+  transform: rotate(280deg);
+}
+
+.hero__container {
+  position: relative;
+  z-index: 2;
+  width: min(1440px, calc(100% - 80px));
+  margin: 0 auto;
+}
+
+.hero__content {
+  max-width: 720px;
+}
+
+.hero__content h1 {
+  max-width: 680px;
+  margin: 0 0 24px;
+  color: #fff;
+  font-family: var(--var-font-heading, inherit);
+  font-size: clamp(40px, 4vw, 64px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+.hero__description {
+  max-width: 650px;
+  margin-bottom: 28px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.hero__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  min-height: 48px;
+  padding: 12px 26px;
+  border: 1px solid #fff;
+  background: #fff;
+  color: var(--teal);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.hero__button:hover {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #fff;
+}
+
+.hero__playerContainer {
+  position: absolute;
+  z-index: 5;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: min(1440px, calc(100% - 80px));
+  margin: 0 auto;
+  transform: translateY(50%);
+}
+
+.player {
+  width: 100%;
+  overflow: hidden;
+  background: #fff;
+  color: #25373a;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.13);
+}
+
+.player__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 66px;
+  padding: 16px 28px;
+}
+
+.player__heading {
+  min-width: 0;
+}
+
+.player__heading h2 {
+  margin: 0 0 5px;
+  color: var(--lime);
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.player__heading span {
+  display: block;
+  overflow: hidden;
+  max-width: 900px;
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player__episodeTitle {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.player__episodeTitle--loading {
+  opacity: 0.45;
+}
+
+.player__navigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.player__navigation button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--teal);
+  background: #fff;
+  color: var(--teal);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.player__navigation button:hover:not(:disabled) {
+  background: var(--teal);
+  color: #fff;
+}
+
+.player__navigation button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.player__spotifyBody {
+  padding: 0 20px 20px;
+}
+
+.player__embedWrapper {
+  position: relative;
+  width: 100%;
+  min-height: 152px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f4f6f7;
+}
+
+.player__spotifyEmbed {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 152px;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.player__spotifyEmbed--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.player__spotifyEmbed--hidden {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.player__spotifyEmbed iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+}
+
+.player__skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px;
+  background: #f4f6f7;
+  animation: podcastSkeletonFade 0.3s ease both;
+}
+
+.player__skeletonArtwork,
+.player__skeletonTitle,
+.player__skeletonSubtitle,
+.player__skeletonPlay,
+.player__skeletonProgress {
+  position: relative;
+  overflow: hidden;
+  background: #e0e5e7;
+}
+
+.player__skeletonArtwork::after,
+.player__skeletonTitle::after,
+.player__skeletonSubtitle::after,
+.player__skeletonPlay::after,
+.player__skeletonProgress::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: podcastSkeletonShimmer 1.3s ease-in-out infinite;
+}
+
+.player__skeletonArtwork {
+  flex: 0 0 110px;
+  width: 110px;
+  height: 110px;
+  border-radius: 8px;
+}
+
+.player__skeletonContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.player__skeletonTitle {
+  width: 55%;
+  height: 16px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.player__skeletonSubtitle {
+  width: 35%;
+  height: 11px;
+  margin-bottom: 24px;
+  border-radius: 4px;
+}
+
+.player__skeletonControls {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.player__skeletonPlay {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 50%;
+}
+
+.player__skeletonProgress {
+  width: 75%;
+  height: 7px;
+  border-radius: 20px;
+}
+
+.player__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #f4f6f7;
+  color: #657275;
+  font-size: 14px;
+  text-align: center;
+}
+
+.player__empty {
+  padding: 25px;
+  color: #657275;
+  text-align: center;
+}
+
+@keyframes podcastSkeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes podcastSkeletonFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 991px) {
+  .hero {
+    min-height: 530px;
+    padding: 85px 0 150px;
+  }
+
+  .hero__container,
+  .hero__playerContainer {
+    width: calc(100% - 48px);
+  }
+
+  .hero__content h1 {
+    font-size: clamp(36px, 5vw, 54px);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero {
+    min-height: 470px;
+    padding: 70px 0 150px;
+  }
+
+  .hero__container,
+  .hero__playerContainer {
+    width: calc(100% - 32px);
+  }
+
+  .hero__content h1 {
+    font-size: clamp(32px, 7vw, 44px);
+  }
+
+  .hero__description {
+    font-size: 15px;
+  }
+
+  .hero__overlay {
+    background: linear-gradient(
+      90deg,
+      rgba(110, 174, 0, 0.96),
+      rgba(110, 174, 0, 0.7)
+    );
+  }
+
+  .player__header {
+    padding: 14px 16px;
+  }
+
+  .player__heading h2 {
+    font-size: 17px;
+  }
+
+  .player__heading span {
+    max-width: 210px;
+    font-size: 12px;
+  }
+
+  .player__navigation button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .player__spotifyBody {
+    padding: 0 12px 12px;
+  }
+
+  .player__skeleton {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .player__skeletonArtwork {
+    flex-basis: 85px;
+    width: 85px;
+    height: 85px;
+  }
+
+  .player__skeletonTitle {
+    width: 90%;
+  }
+
+  .player__skeletonSubtitle {
+    width: 65%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .player__spotifyEmbed,
+  .player__episodeTitle {
+    transition: none;
+  }
+
+  .player__skeleton {
+    animation: none;
+  }
+
+  .player__skeletonArtwork::after,
+  .player__skeletonTitle::after,
+  .player__skeletonSubtitle::after,
+  .player__skeletonPlay::after,
+  .player__skeletonProgress::after {
+    animation: none;
+  }
+}

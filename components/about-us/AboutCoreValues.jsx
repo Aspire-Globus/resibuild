@@ -1,68 +1,116 @@
 import Link from "next/link";
+import styles from "./AboutCoreValues.module.css";
 
-export default function AboutCoreValues({
-  data,
-}) {
+export default function AboutCoreValues({ data }) {
   if (!data) return null;
 
+  const {
+    heading,
+    buttonText,
+    buttonUrl,
+    items = [],
+  } = data;
+
   return (
-    <section className="about-core-values">
+    <section
+      className={styles["about-core-values"]}
+      id="core-values"
+    >
+      <div className={styles["about-core-values__container"]}>
 
-      <div className="home-container">
+        {/* =====================================
+            SECTION HEADER
+        ===================================== */}
 
-        <div className="about-core-values__header">
+        <div className={styles["about-core-values__header"]}>
 
-          {data.heading && (
-            <h2>
-              {data.heading}
-            </h2>
+          {/* HEADING */}
+          {heading && (
+            <h2
+              className={styles["about-core-values__heading"]}
+              dangerouslySetInnerHTML={{
+                __html: heading,
+              }}
+            />
           )}
 
-          {data.buttonText && (
+          {/* BUTTON */}
+          {buttonText && (
             <Link
-              href={data.buttonUrl || "#"}
-              className="about-core-values__button"
+              href={buttonUrl || "#"}
+              className={styles["about-core-values__button"]}
             >
-              {data.buttonText}
+              <span>{buttonText}</span>
 
-              <span>→</span>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12H19M13 6L19 12L13 18"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </Link>
           )}
 
         </div>
 
-        <div className="about-core-values__grid">
+        {/* =====================================
+            CORE VALUES GRID
+        ===================================== */}
 
-          {data.items?.map(
-            (item, index) => (
+        {Array.isArray(items) && items.length > 0 && (
+          <div className={styles["about-core-values__grid"]}>
+
+            {items.map((item, index) => (
               <article
-                className="about-core-value"
-                key={index}
+                className={styles["about-core-value"]}
+                key={item.id || index}
               >
 
+                {/* IMAGE */}
                 {item.image && (
-                  <div className="about-core-value__image">
+                  <div
+                    className={styles["about-core-value__image"]}
+                  >
                     <img
                       src={item.image}
-                      alt={
-                        item.imageAlt ||
-                        item.title ||
-                        ""
-                      }
+                      alt={item.imageAlt || item.title || ""}
+                      loading="lazy"
                     />
                   </div>
                 )}
 
-                <div className="about-core-value__content">
+                {/* GRADIENT OVERLAY */}
+                <div
+                  className={styles["about-core-value__overlay"]}
+                  aria-hidden="true"
+                />
+
+                {/* CARD CONTENT */}
+                <div
+                  className={styles["about-core-value__content"]}
+                >
 
                   {item.title && (
-                    <h3>
+                    <h3
+                      className={styles["about-core-value__title"]}
+                    >
                       {item.title}
                     </h3>
                   )}
 
                   {item.text && (
-                    <p>
+                    <p
+                      className={styles["about-core-value__text"]}
+                    >
                       {item.text}
                     </p>
                   )}
@@ -70,13 +118,12 @@ export default function AboutCoreValues({
                 </div>
 
               </article>
-            )
-          )}
+            ))}
 
-        </div>
+          </div>
+        )}
 
       </div>
-
     </section>
   );
 }

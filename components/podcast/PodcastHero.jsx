@@ -1,64 +1,83 @@
 import Link from "next/link";
+import styles from "./PodcastHero.module.css";
 
 export default function PodcastHero({ data }) {
   if (!data) return null;
 
-  return (
-    <section className="podcast-hero">
+  const {
+    video,
+    title,
+    description,
+    buttonText,
+    buttonUrl,
+  } = data;
 
-      {data.video && (
+  return (
+    <section className={styles["podcast-hero"]}>
+
+      {/* BACKGROUND VIDEO */}
+      {video && (
         <video
-          className="podcast-hero__video"
+          className={styles["podcast-hero__media"]}
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
+          aria-hidden="true"
         >
-          <source
-            src={data.video}
-            type="video/mp4"
-          />
+          <source src={video} type="video/mp4" />
         </video>
       )}
 
-      <div className="podcast-hero__overlay" />
+      {/* GREEN GRADIENT OVERLAY */}
+      <div
+        className={styles["podcast-hero__overlay"]}
+        aria-hidden="true"
+      />
 
-      <div className="podcast-hero__pattern" />
+      {/* CONTENT */}
+      <div className={styles["podcast-hero__inner"]}>
+        <div className={styles["podcast-hero__content"]}>
 
-      <div className="podcast-container">
-
-        <div className="podcast-hero__content">
-
-          {data.title && (
+          {/* HEADING */}
+          {title && (
             <h1
+              className={styles["podcast-hero__heading"]}
               dangerouslySetInnerHTML={{
-                __html: data.title,
+                __html: title,
               }}
             />
           )}
 
-          {data.description && (
-            <div
-              className="podcast-hero__description"
+          {/* DESCRIPTION */}
+          {description && (
+            <p
+              className={styles["podcast-hero__description"]}
               dangerouslySetInnerHTML={{
-                __html: data.description,
+                __html: description,
               }}
             />
           )}
 
-          {data.buttonText && (
+          {/* BUTTON */}
+          {buttonText && (
             <Link
-              href={data.buttonUrl || "#"}
-              className="podcast-hero__button"
+              href={buttonUrl || "#"}
+              className={styles["podcast-hero__button"]}
             >
-              {data.buttonText}
-              <span>→</span>
+              <span>{buttonText}</span>
+
+              <span
+                className={styles["podcast-hero__arrow"]}
+                aria-hidden="true"
+              >
+                →
+              </span>
             </Link>
           )}
 
         </div>
-
       </div>
 
     </section>

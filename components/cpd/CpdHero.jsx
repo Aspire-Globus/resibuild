@@ -1,66 +1,105 @@
 import Link from "next/link";
+import styles from "./CpdHero.module.css";
 
-export default function CpdHero({
-  data,
-}) {
+export default function CpdHero({ data }) {
   if (!data) return null;
 
-  return (
-    <section className="cpd-hero">
+  const {
+    video = "",
+    heading = "",
+    description = "",
+    buttonText = "",
+    buttonUrl = "#",
+  } = data;
 
-      {data.video && (
+  return (
+    <section className={styles["cpd-hero"]}>
+
+      {/* BACKGROUND VIDEO */}
+
+      {video && (
         <video
-          className="cpd-hero__video"
+          className={styles["cpd-hero__video"]}
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
+          aria-hidden="true"
         >
-          <source
-            src={data.video}
-            type="video/mp4"
-          />
+          <source src={video} type="video/mp4" />
         </video>
       )}
 
-      <div className="cpd-hero__overlay" />
+      {/* GRADIENT OVERLAY */}
 
-      <div className="cpd-hero__pattern" />
+      <div
+        className={styles["cpd-hero__overlay"]}
+        aria-hidden="true"
+      />
 
-      <div className="cpd-container">
+      {/* DECORATIVE PATTERN */}
 
-        <div className="cpd-hero__content">
+      <div
+        className={styles["cpd-hero__pattern"]}
+        aria-hidden="true"
+      />
 
-          {data.heading && (
+      {/* CONTENT CONTAINER */}
+
+      <div className={styles["cpd-hero__container"]}>
+        <div className={styles["cpd-hero__content"]}>
+
+          {/* HEADING */}
+
+          {heading && (
             <h1
+              className={styles["cpd-hero__title"]}
               dangerouslySetInnerHTML={{
-                __html: data.heading,
+                __html: heading,
               }}
             />
           )}
 
-          {data.description && (
+          {/* DESCRIPTION */}
+
+          {description && (
             <div
-              className="cpd-hero__description"
+              className={styles["cpd-hero__description"]}
               dangerouslySetInnerHTML={{
-                __html: data.description,
+                __html: description,
               }}
             />
           )}
 
-          {data.buttonText && (
+          {/* CTA BUTTON */}
+
+          {buttonText && (
             <Link
-              href={data.buttonUrl || "#"}
-              className="cpd-hero__button"
+              href={buttonUrl || "#"}
+              className={styles["cpd-hero__button"]}
             >
-              {data.buttonText}
-              <span>→</span>
+              <span>{buttonText}</span>
+
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12H19M13 6L19 12L13 18"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </Link>
           )}
 
         </div>
-
       </div>
 
     </section>
