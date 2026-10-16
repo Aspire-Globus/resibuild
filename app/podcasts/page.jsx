@@ -6,7 +6,7 @@ export const metadata = {
   title: "Podcasts | Resibuild",
 };
 
-const ACTIVE_TEMPLATE = "template2";
+const ACTIVE_TEMPLATE = "template1";
 
 export default function PodcastsPage() {
   if (ACTIVE_TEMPLATE === "template2") {

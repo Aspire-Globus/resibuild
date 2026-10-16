@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 
 import { fetchGraphQL } from "../../../lib/graphql";
 import { SINGLE_CONTENT_QUERY } from "../../../lib/queries/single";
-
+import FeaturedSpeakers from "../../../components/podcast/FeaturedSpeakers/FeaturedSpeakers";
+import { featuredSection } from "../../../lib/queries/podcastsTwo";
+import PodcastAvailable from "../../../components/podcast/PodcastAvailable";
 import styles from "./page.module.css";
 
 function stripHtml(value = "") {
@@ -96,6 +98,51 @@ export default async function PodcastSinglePage({ params }) {
   const categories =
     podcast.podcastsCategory?.nodes || [];
 
+  const featuredSpeakers = (
+  podcast?.podcastsPostType?.featuredSection?.details || []
+)
+  .map((item) => ({
+    name: item?.name || "",
+    image: item?.image?.node?.sourceUrl || "",
+    imageAlt: item?.image?.node?.altText || "",
+    linkedinUrl: item?.linkedinUrl?.url || "",
+    linkedinTitle: item?.linkedinUrl?.title || "",
+    linkedinTarget: item?.linkedinUrl?.target || "_blank",
+  }))
+  .filter((speaker) => speaker.name || speaker.image);
+
+  const podcastAvailableFields =
+  podcast?.podcastsPostType?.podcastAvailable || {};
+
+const podcastAvailable = {
+  heading: "Podcast Available On",
+
+  platforms: (
+    podcastAvailableFields?.availableOn || []
+  )
+    .map((item, index) => ({
+      id: index,
+
+      image:
+        item?.image?.node?.sourceUrl || "",
+
+      imageAlt:
+        item?.image?.node?.altText || "",
+
+      title:
+        item?.link?.title ||
+        item?.image?.node?.altText ||
+        "",
+
+      url:
+        item?.link?.url || "",
+
+      target:
+        item?.link?.target || "_blank",
+    }))
+    .filter((item) => item.image),
+};
+
   return (
     <main className={styles["podcast-single"]}>
       <section className={styles["podcast-single__hero"]}>
@@ -139,6 +186,10 @@ export default async function PodcastSinglePage({ params }) {
           </div>
         </div>
       </section>
+
+      <div className={styles["podcast-single__available"]}>
+        <PodcastAvailable data={podcastAvailable} />
+      </div>
 
       <section className={styles["podcast-single__intro"]}>
         <div className={styles["podcast-single__container"]}>
@@ -217,6 +268,8 @@ export default async function PodcastSinglePage({ params }) {
           </div>
         </section>
       )}
+
+      <FeaturedSpeakers speakers={featuredSpeakers} />
 
       <section className={styles["podcast-single__cta"]}>
         <div className={styles["podcast-single__container"]}>

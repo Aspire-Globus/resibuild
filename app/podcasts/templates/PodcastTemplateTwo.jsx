@@ -76,25 +76,16 @@ export default async function PodcastTemplateTwo() {
     );
   }
 
-  /* =========================================
-       TESTIMONIALS
-    ========================================= */
-  
-    try {
-  
-      testimonialsResult = await fetchGraphQL(
-        HOME_TESTIMONIALS_QUERY
-      );
-  
-    } catch (error) {
-  
-      console.log(
-        "Podcast testimonials GraphQL error:",
-        error.message
-      );
-  
-    }
-  
+  try {
+    testimonialsResult = await fetchGraphQL(
+      HOME_TESTIMONIALS_QUERY
+    );
+  } catch (error) {
+    console.error(
+      "Podcast testimonials GraphQL error:",
+      error.message
+    );
+  }
 
   const page = podcastResult?.page || null;
 
@@ -117,7 +108,8 @@ export default async function PodcastTemplateTwo() {
       "",
 
     backgroundImage:
-      bannerContent.backgroundImage?.node?.sourceUrl || "",
+      bannerContent.backgroundImage?.node?.sourceUrl ||
+      "",
   };
 
   const pagePlatforms =
@@ -141,26 +133,48 @@ export default async function PodcastTemplateTwo() {
       slug: category.slug,
     }));
 
+    const podcastAnalysis =
+      item?.podcastsPostType?.podcastsAnalysis || {};
+
     return {
       id: item.databaseId,
+
       title: stripHtml(item.title || ""),
+
       excerpt: stripHtml(item.excerpt || ""),
-      image: item.featuredImage?.node?.sourceUrl || "",
-      imageAlt: item.featuredImage?.node?.altText || "",
+
+      image:
+        item.featuredImage?.node?.sourceUrl || "",
+
+      imageAlt:
+        item.featuredImage?.node?.altText || "",
+
       url: item.uri || "#",
+
       audioUrl: "",
+
       spotifyUrl: episodeSpotifyUrl,
+
       categories,
+
+      analysis: {
+        listens: podcastAnalysis.listen ?? null,
+        likes: podcastAnalysis.likes ?? null,
+        comments: podcastAnalysis.comments ?? null,
+      },
     };
   });
 
   const cta = fields?.ctaSection
     ? {
-        heading: fields.ctaSection.heading || "",
+        heading:
+          fields.ctaSection.heading || "",
 
-        text: fields.ctaSection.text || "",
+        text:
+          fields.ctaSection.text || "",
 
-        buttonText: fields.ctaSection.buttonText || "",
+        buttonText:
+          fields.ctaSection.buttonText || "",
 
         buttonUrl:
           fields.ctaSection.buttonLink?.url || "#",
@@ -171,41 +185,26 @@ export default async function PodcastTemplateTwo() {
       }
     : null;
 
-    /* =========================================
-     TESTIMONIALS
-  ========================================= */
-
   const wpTestimonials =
     testimonialsResult?.allTestimonials?.nodes || [];
 
+  const testimonials = wpTestimonials.map((testimonial) => ({
+    id: testimonial.databaseId,
 
-  const testimonials =
-    wpTestimonials.map((testimonial) => ({
+    quote: stripHtml(testimonial.content || ""),
 
-      id:
-        testimonial.databaseId,
+    author:
+      testimonial.testimonialFields?.clientName || "",
 
-      quote:
-        testimonial.content
-          ?.replace(/<[^>]*>/g, "")
-          .replace(/&nbsp;/g, " ")
-          .trim() || "",
+    role:
+      testimonial.testimonialFields?.clientDesignation || "",
+  }));
 
-      author:
-        testimonial.testimonialFields
-          ?.clientName || "",
-
-      role:
-        testimonial.testimonialFields
-          ?.clientDesignation || "",
-
-    }));
-const testimonialBackgroundImage =
-  testimonialsResult?.options
-    ?.globalTestimonialSettings
-    ?.testimonialBackgroundImage
-    ?.node?.sourceUrl || "";
-
+  const testimonialBackgroundImage =
+    testimonialsResult?.options
+      ?.globalTestimonialSettings
+      ?.testimonialBackgroundImage
+      ?.node?.sourceUrl || "";
 
   return (
     <main className={styles["podcasts-template-two"]}>
@@ -215,14 +214,16 @@ const testimonialBackgroundImage =
         spotifyUrl={pageSpotifyUrl}
       />
 
-      <LatestEpisodes podcasts={podcasts} />
+      <LatestEpisodes podcasts={podcasts}/>
 
       {cta && <ThoughtLeaderCTA data={cta} />}
-      <ClientTestimonial
-                items={testimonials}
-                backgroundImage={testimonialBackgroundImage}
-              />
-      
+
+      {testimonials.length > 0 && (
+        <ClientTestimonial
+          items={testimonials}
+          backgroundImage={testimonialBackgroundImage}
+        />
+      )}
     </main>
   );
 }
