@@ -2,12 +2,13 @@ import "./globals.css";
 
 import Header from "../components/global/header/Header";
 import Footer from "../components/global/footer/Footer";
+import PageLoader from "../components/global/PageLoader/PageLoader";
 
 import { fetchGraphQL } from "../lib/graphql";
 import { GLOBAL_QUERY } from "../lib/queries/global";
 
 export const metadata = {
-   title: "Resibuild",
+  title: "Resibuild",
   description:
     "Construction events, CPD courses, podcasts and industry insights.",
   icons: {
@@ -26,9 +27,7 @@ export default async function RootLayout({ children }) {
   let globalData = null;
 
   try {
-    globalData = await fetchGraphQL(
-      GLOBAL_QUERY
-    );
+    globalData = await fetchGraphQL(GLOBAL_QUERY);
   } catch (error) {
     console.log(
       "Global GraphQL error:",
@@ -48,9 +47,15 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="stylesheet"   href="https://s.w.org/wp-includes/css/dashicons.css" />
+        <link
+          rel="stylesheet"
+          href="https://s.w.org/wp-includes/css/dashicons.css"
+        />
       </head>
+
       <body>
+        <PageLoader />
+
         <Header
           data={header}
           menuItems={menuItems}

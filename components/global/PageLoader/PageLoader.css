@@ -1,0 +1,56 @@
+.global-page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 100vh;
+
+  background: #ffffff;
+
+  opacity: 1;
+  visibility: visible;
+
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s ease;
+}
+
+.global-page-loader--hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.global-page-loader__logo {
+  display: block;
+
+  width: 220px;
+  max-width: 70vw;
+  height: auto;
+
+  object-fit: contain;
+
+  animation: resibuildLoaderPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes resibuildLoaderPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .global-page-loader__logo {
+    width: 170px;
+  }
+}

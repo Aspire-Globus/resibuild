@@ -1,0 +1,44 @@
+.route-page-loader {
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+
+  z-index: 999999;
+}
+
+.route-page-loader__logo {
+  display: block;
+
+  width: 220px;
+  max-width: 70vw;
+  height: auto;
+
+  object-fit: contain;
+
+  animation: routeLoaderPulse 1.3s ease-in-out infinite;
+}
+
+@keyframes routeLoaderPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+ 
+@media (max-width: 767px) {
+  .route-page-loader__logo {
+    width: 170px;
+  }
+}
