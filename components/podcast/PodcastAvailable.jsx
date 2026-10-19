@@ -1,31 +1,91 @@
-export default function PodcastAvailable() {
+import styles from "./PodcastAvailable.module.css";
+
+export default function PodcastAvailable({ data }) {
+  if (!data) return null;
+
+  const {
+    heading = "",
+    platforms = [],
+  } = data;
+
+  const validPlatforms = Array.isArray(platforms)
+    ? platforms.filter((item) => item.image)
+    : [];
+
+  if (!heading && validPlatforms.length === 0) {
+    return null;
+  }
+
   return (
-    <section className="podcast-available">
+    <section
+      className={styles["podcast-available"]}
+      aria-label="Podcast platforms"
+    >
+      <div className={styles["podcast-available__container"]}>
 
-      <div className="podcast-container">
+        <div className={styles["podcast-available__inner"]}>
 
-        <div className="podcast-available__inner">
+          {/* LEFT HEADING */}
 
-          <span className="podcast-available__label">
-            Podcast Available On
-          </span>
+          {heading && (
+            <h3 className={styles["podcast-available__heading"]}>
+              <span>{heading}</span>
+            </h3>
+          )}
 
-          <div className="podcast-available__platforms">
+          {/* RIGHT PLATFORM LOGOS */}
 
-            <span>
-              YouTube
-            </span>
+          {validPlatforms.length > 0 && (
+            <div className={styles["podcast-available__platforms"]}>
 
-            <span>
-              Spotify
-            </span>
+              {validPlatforms.map((item, index) => {
+                const logo = (
+                  <img
+                    src={item.image}
+                    alt={
+                      item.imageAlt ||
+                      item.title ||
+                      "Podcast platform"
+                    }
+                    loading="lazy"
+                  />
+                );
 
-          </div>
+                return (
+                  <div
+                    className={styles["podcast-available__item"]}
+                    key={item.id ?? index}
+                  >
+                    {item.url ? (
+                      <a
+                        href={item.url}
+                        target={item.target || "_blank"}
+                        rel={
+                          (item.target || "_blank") === "_blank"
+                            ? "noopener noreferrer"
+                            : undefined
+                        }
+                        aria-label={
+                          item.title ||
+                          item.imageAlt ||
+                          "Visit podcast platform"
+                        }
+                      >
+                        {logo}
+                      </a>
+                    ) : (
+                      logo
+                    )}
+                  </div>
+                );
+              })}
+
+            </div>
+          )}
 
         </div>
 
       </div>
-
     </section>
   );
 }

@@ -1,5 +1,3 @@
-import "./home.css";
-
 import HeroSlider from "../components/home/HeroSlider";
 import LeadingInsights from "../components/home/LeadingInsights";
 import SpeakerStrip from "../components/home/SpeakerStrip";
@@ -10,7 +8,6 @@ import IndustryUpdates from "../components/home/IndustryUpdates";
 import ExternalEnvelope from "../components/home/ExternalEnvelope";
 import ClientTestimonial from "../components/home/ClientTestimonial";
 
-import { homeData } from "../data/homeData";
 
 import { fetchGraphQL } from "../lib/graphql";
 import { HOME_PAGE_QUERY } from "../lib/queries/home";
@@ -145,9 +142,9 @@ export default async function HomePage() {
             },
 
             image:
-              homeData.heroSlider[index]?.image ||
-              homeData.heroSlider[0]?.image ||
-              "/images/hero.png",
+              slide?.image?.node?.sourceUrl ||
+              slide?.image?.sourceUrl ||
+              (typeof slide?.image === "string" ? slide.image : ""),
 
             video:
               wpFields?.slider
@@ -156,7 +153,7 @@ export default async function HomePage() {
                 ?.mediaItemUrl || null,
           })
         )
-      : homeData.heroSlider;
+      : [];
 
   /* =========================================================
      LEADING INSIGHTS
@@ -167,62 +164,29 @@ export default async function HomePage() {
       ?.split(/\n\s*\n/)
       .filter(Boolean) || [];
 
-  const leadingInsights =
-    wpFields?.secondSection
-      ? {
-          image:
-            wpFields.secondSection
-              .leftImage
-              ?.node
-              ?.sourceUrl ||
-            homeData.leadingInsights.image,
+  const leadingInsights = wpFields?.secondSection
+  ? {
+      image:
+        wpFields.secondSection.leftImage?.node?.sourceUrl || null,
 
-          heading:
-            wpFields.secondSection.title ||
-            homeData.leadingInsights.heading,
+      title:
+        wpFields.secondSection.title || "",
 
-          description:
-            descriptionParts[0] ||
-            homeData.leadingInsights.description,
+      description:
+        wpFields.secondSection.description || "",
 
-          descriptionTwo:
-            descriptionParts[1] ||
-            homeData.leadingInsights.descriptionTwo,
+      establishedYear:
+        wpFields.secondSection.establishedYear || "",
 
-          stats: [
-            {
-              number:
-                wpFields.secondSection
-                  .establishedYear ||
-                "2018",
+      cpdEvents:
+        wpFields.secondSection.cpdEvents || "",
 
-              label:
-                "Established",
-            },
-
-            {
-              number:
-                wpFields.secondSection
-                  .cpdEvents ||
-                "0",
-
-              label:
-                "CPD Events",
-            },
-
-            {
-              number:
-                wpFields.secondSection
-                  .peopleEducated
-                  ? `${wpFields.secondSection.peopleEducated}+`
-                  : "3000+",
-
-              label:
-                "People Educated",
-            },
-          ],
-        }
-      : homeData.leadingInsights;
+      peopleEducated:
+        wpFields.secondSection.peopleEducated
+          ? `${wpFields.secondSection.peopleEducated}+`
+          : "",
+    }
+  : null;
 
   /* =========================================================
      SPEAKERS
@@ -266,10 +230,10 @@ export default async function HomePage() {
       .trim() || "";
 
   let eventHeadingPrefix =
-    homeData.eventsOnDemand.headingPrefix;
+    "";
 
   let eventHeading =
-    homeData.eventsOnDemand.heading;
+    "";
 
   if (cleanEventHeading) {
     const separator = " - ";
@@ -297,33 +261,58 @@ export default async function HomePage() {
      EVENTS CPT
   ========================================================= */
 
+  // const dynamicEventItems =
+  //   wpEvents.length > 0
+  //     ? wpEvents.map((event) => ({
+  //         id:
+  //           event.databaseId,
+
+  //         title:
+  //           event.title,
+
+  //         topic:
+  //           "Events",
+
+  //         image:
+  //           event.featuredImage
+  //             ?.node
+  //             ?.sourceUrl ||
+  //           "",
+
+  //         url:
+  //           event.uri ||
+  //           "/events/",
+  //       }))
+  //     : [];
+
   const dynamicEventItems =
-    wpEvents.length > 0
-      ? wpEvents.map((event) => ({
-          id:
-            event.databaseId,
+  wpEvents.length > 0
+    ? wpEvents.map((event) => ({
+        id: event.databaseId,
 
-          title:
-            event.title,
+        title: event.title,
 
-          topic:
-            "Events",
+        image:
+          event.featuredImage?.node?.sourceUrl || "",
 
-          image:
-            event.featuredImage
-              ?.node
-              ?.sourceUrl ||
-            "/images/Sapphire_Shard_2021_180_v884sb.png",
+        alt:
+          event.featuredImage?.node?.altText || "",
 
-          url:
-            event.uri ||
-            "/events/",
-        }))
-      : homeData.eventsOnDemand.items;
+        url:
+          event.uri || "/events/",
+
+        categories:
+          event.eventCategories?.nodes?.map(
+            (category) => ({
+              id: category.databaseId,
+              name: category.name,
+              slug: category.slug,
+            })
+          ) || [],
+      }))
+    : [];
 
   const eventsOnDemand = {
-    ...homeData.eventsOnDemand,
-
     headingPrefix:
       eventHeadingPrefix,
 
@@ -341,24 +330,25 @@ export default async function HomePage() {
      PODCAST CTA
   ========================================================= */
 
-  const podcastCTA =
-    wpFields?.cta
-      ? {
-          ...homeData.podcastCTA,
+/* =========================================================
+   PODCAST CTA
+========================================================= */
 
-          heading:
-            wpFields.cta.title ||
-            homeData.podcastCTA.heading,
+const podcastCTA = wpFields?.cta
+  ? {
+      heading: wpFields.cta.title || "",
 
-          buttonLabel:
-            wpFields.cta.buttonText ||
-            homeData.podcastCTA.buttonLabel,
+      buttonLabel: wpFields.cta.buttonText || "",
 
-          buttonUrl:
-            wpFields.cta.buttonUrl?.url ||
-            homeData.podcastCTA.buttonUrl,
-        }
-      : homeData.podcastCTA;
+      buttonUrl: wpFields.cta.buttonUrl?.url || "#",
+
+      buttonTarget: wpFields.cta.buttonUrl?.target || "_self",
+
+      image: wpFields.cta.overlayImage?.node?.sourceUrl || null,
+
+      imageAlt: wpFields.cta.overlayImage?.node?.altText || "",
+    }
+  : null;
 
   /* =========================================================
      PODCASTS
@@ -390,14 +380,12 @@ export default async function HomePage() {
           linkLabel:
             "Read More",
         }))
-      : homeData.inspirationNews.items;
+      : [];
 
   const inspirationNews = {
-    ...homeData.inspirationNews,
-
     heading:
       wpFields?.podcastSection?.heading ||
-      homeData.inspirationNews.heading,
+      "",
 
     items:
       dynamicPodcastItems,
@@ -425,7 +413,7 @@ export default async function HomePage() {
             insight.featuredImage
               ?.node
               ?.sourceUrl ||
-            "/images/Blog-img-1.png",
+            null,
 
           alt:
             insight.featuredImage
@@ -440,22 +428,20 @@ export default async function HomePage() {
           linkLabel:
             "Read More",
         }))
-      : homeData.industryUpdates.items;
+      : [];
 
   const industryUpdates = {
-    ...homeData.industryUpdates,
-
     heading:
       wpFields?.insightsSection?.heading ||
-      homeData.industryUpdates.heading,
+      "",
 
     text:
       wpFields?.insightsSection?.description ||
-      homeData.industryUpdates.text,
+      "",
 
     linkLabel:
       wpFields?.insightsSection?.linkTitle ||
-      homeData.industryUpdates.linkLabel,
+      "",
 
     linkUrl:
       wpFields?.insightsSection
@@ -479,40 +465,44 @@ export default async function HomePage() {
               .image
               ?.node
               ?.sourceUrl ||
-            homeData.externalEnvelope.bookImage,
+            "",
 
           heading:
             wpFields.ctaBooking.heading ||
-            homeData.externalEnvelope.heading,
+            "",
 
           text:
             wpFields.ctaBooking.description ||
-            homeData.externalEnvelope.text,
+            "",
 
           buttonLabel:
             wpFields.ctaBooking.buttonText ||
-            homeData.externalEnvelope.buttonLabel,
+            "",
 
           buttonUrl:
             wpFields.ctaBooking
               .buttonUrl
               ?.url ||
-            homeData.externalEnvelope.buttonUrl,
+            "",
         }
-      : homeData.externalEnvelope;
+      : null;
 
   /* =========================================================
      TESTIMONIAL
   ========================================================= */
+let testimonialsResponse = null;
 
+try {
+  testimonialsResponse = await fetchGraphQL(
+    HOME_TESTIMONIALS_QUERY
+  );
+} catch (error) {
+  console.error("Testimonials fetch error:", error);
+}
  const testimonials =
   wpTestimonials.length > 0
     ? wpTestimonials.map((testimonial) => ({
-        id:
-          testimonial.databaseId,
-
-        backgroundImage:
-          homeData.testimonial.backgroundImage,
+        id: testimonial.databaseId,
 
         quote:
           testimonial.content
@@ -521,31 +511,17 @@ export default async function HomePage() {
             .trim() || "",
 
         author:
-          testimonial.testimonialFields
-            ?.clientName || "",
+          testimonial.testimonialFields?.clientName || "",
 
         role:
-          testimonial.testimonialFields
-            ?.clientDesignation || "",
+          testimonial.testimonialFields?.clientDesignation || "",
       }))
-    : [
-        {
-          id: 1,
-
-          backgroundImage:
-            homeData.testimonial.backgroundImage,
-
-          quote:
-            homeData.testimonial.quote,
-
-          author:
-            homeData.testimonial.author,
-
-          role:
-            homeData.testimonial.role,
-        },
-      ];
-
+    : [];
+const testimonialBackgroundImage =
+  testimonialsResponse?.options
+    ?.globalTestimonialSettings
+    ?.testimonialBackgroundImage
+    ?.node?.sourceUrl || "";
   /* =========================================================
      OUTPUT
   ========================================================= */
@@ -585,8 +561,9 @@ export default async function HomePage() {
       />
 
       <ClientTestimonial
-          items={testimonials}
-        />
+        items={testimonials}
+        backgroundImage={testimonialBackgroundImage}
+      />
     </main>
   );
 }

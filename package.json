@@ -10,6 +10,8 @@
   "dependencies": {
     "next": "^15.5.4",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "sanitize-html": "^2.18.1",
+    "webpack": "^5.112.0"
   }
 }

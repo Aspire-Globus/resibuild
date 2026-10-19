@@ -1,5 +1,3 @@
-import "./events.css";
-
 import { fetchGraphQL } from "../../lib/graphql";
 
 import {
@@ -198,53 +196,58 @@ export default async function EventsPage() {
     homeResult?.page?.homePageFields || {};
 
 
-  const podcastCTA =
-    homeFields?.cta
-      ? {
+  const podcastCTA = homeFields?.cta
+  ? {
+      heading:
+        homeFields.cta.title || "",
 
-          heading:
-            homeFields.cta.title || "",
+      buttonLabel:
+        homeFields.cta.buttonText || "",
 
-          buttonLabel:
-            homeFields.cta.buttonText || "",
+      buttonUrl:
+        homeFields.cta.buttonUrl?.url || "#",
 
-          buttonUrl:
-            homeFields.cta.buttonUrl?.url || "#",
+      buttonTarget:
+        homeFields.cta.buttonUrl?.target || "_self",
 
-        }
-      : null;
+      image:
+        homeFields.cta.overlayImage?.node?.sourceUrl || "",
 
+      imageAlt:
+        homeFields.cta.overlayImage?.node?.altText || "",
+    }
+  : null;
 
   /* =========================================
      TESTIMONIALS
   ========================================= */
 
   const wpTestimonials =
-    testimonialsResult?.allTestimonials?.nodes || [];
+  testimonialsResult?.allTestimonials?.nodes || [];
 
+// Map testimonial content
+const testimonials = wpTestimonials.map((testimonial) => ({
+  id: testimonial.databaseId,
 
-  const testimonials =
-    wpTestimonials.map((testimonial) => ({
+  quote:
+    testimonial.content
+      ?.replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .trim() || "",
 
-      id:
-        testimonial.databaseId,
+  author:
+    testimonial.testimonialFields?.clientName || "",
 
-      quote:
-        testimonial.content
-          ?.replace(/<[^>]*>/g, "")
-          .replace(/&nbsp;/g, " ")
-          .trim() || "",
+  role:
+    testimonial.testimonialFields?.clientDesignation || "",
+}));
 
-      author:
-        testimonial.testimonialFields
-          ?.clientName || "",
-
-      role:
-        testimonial.testimonialFields
-          ?.clientDesignation || "",
-
-    }));
-
+// Global background image from ACF Options Page
+const testimonialBackgroundImage =
+  testimonialsResult?.options
+    ?.globalTestimonialSettings
+    ?.testimonialBackgroundImage
+    ?.node?.sourceUrl || "";
 
   /* =========================================
      OUTPUT
@@ -290,6 +293,7 @@ export default async function EventsPage() {
 
         <ClientTestimonial
           items={testimonials}
+          backgroundImage={testimonialBackgroundImage}
         />
 
       )}

@@ -1,6 +1,3 @@
-import "./contact.css";
-import "../home.css";
-
 import { fetchGraphQL } from "../../lib/graphql";
 
 import { CONTACT_PAGE_QUERY } from "../../lib/queries/contact";
@@ -170,9 +167,13 @@ export default async function ContactPage() {
       stripHtml(
         fields?.sectionSection?.title || ""
       ),
+    email: fields?.sectionSection?.email || "",
+    followHeading:
+      fields?.sectionSection?.followHeading || "",
+    linkedinUrl:
+      fields?.sectionSection?.linkedinUrl || "",
 
   };
-
 
   /* =========================================
      CONTACT FORM
@@ -218,6 +219,12 @@ export default async function ContactPage() {
             homeFields.cta
               ?.buttonUrl
               ?.url || "#",
+          
+          image:
+            homeFields.cta.overlayImage?.node?.sourceUrl || "",
+
+          imageAlt:
+            homeFields.cta.overlayImage?.node?.altText || "",
 
         }
       : null;
@@ -254,6 +261,11 @@ export default async function ContactPage() {
 
     }));
 
+    const testimonialBackgroundImage =
+      testimonialResult?.options
+        ?.globalTestimonialSettings
+        ?.testimonialBackgroundImage
+        ?.node?.sourceUrl || "";
 
   /* =========================================
      OUTPUT
@@ -308,6 +320,7 @@ export default async function ContactPage() {
       {testimonials.length > 0 && (
         <ClientTestimonial
           items={testimonials}
+          backgroundImage={testimonialBackgroundImage}
         />
       )}
 

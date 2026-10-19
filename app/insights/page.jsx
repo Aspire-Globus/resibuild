@@ -1,6 +1,3 @@
-import "./insights.css";
-import "../home.css";
-
 import { fetchGraphQL } from "../../lib/graphql";
 
 import { INSIGHTS_PAGE_QUERY } from "../../lib/queries/insights";
@@ -11,11 +8,11 @@ import { HOME_TESTIMONIALS_QUERY } from "../../lib/queries/testimonials";
 
 import { homeData } from "../../data/homeData";
 
-import InsightHero from "../../components/insights/InsightsHero";
+import InsightsHero from "../../components/insights/InsightsHero";
 import InsightsGrid from "../../components/insights/InsightsGrid";
 
 import InspirationNews from "../../components/home/InspirationNews";
-import EventsOnDemand from "../../components/home/EventsOnDemand";
+import UpcomingEvents from "../../components/podcast/UpcomingEvents";
 import ExternalEnvelope from "../../components/home/ExternalEnvelope";
 import ClientTestimonial from "../../components/home/ClientTestimonial";
 
@@ -57,7 +54,7 @@ export default async function InsightsPage() {
   let homeResult = null;
   let eventsResult = null;
   let podcastsResult = null;
-  let testimonialResult = null;
+  let testimonialsResult = null;
 
   try {
     [
@@ -65,7 +62,7 @@ export default async function InsightsPage() {
       homeResult,
       eventsResult,
       podcastsResult,
-      testimonialResult,
+      testimonialsResult,
     ] = await Promise.all([
       fetchGraphQL(INSIGHTS_PAGE_QUERY),
       fetchGraphQL(HOME_PAGE_QUERY),
@@ -247,69 +244,32 @@ export default async function InsightsPage() {
     }
   }
 
+/* =========================================
+   UPCOMING EVENTS
+   REUSE PODCAST COMPONENT
+========================================= */
 
-  /* =========================================
-     EVENTS
-  ========================================= */
+const wpEvents =
+  eventsResult?.allEvents?.nodes || [];
 
-  const wpEvents =
-    eventsResult?.allEvents?.nodes || [];
+const upcomingEvents = wpEvents
+  .slice(0, 4)
+  .map((event) => ({
+    id: event.databaseId,
 
-  const dynamicEventItems =
-    wpEvents.length > 0
-      ? wpEvents.slice(0, 3).map((event) => ({
-          id:
-            event.databaseId,
+    title: event.title || "",
 
-          title:
-            event.title || "",
+    url: event.uri || "/events/",
 
-          topic:
-            "Events",
+    excerpt: stripHtml(event.excerpt || ""),
 
-          excerpt:
-            stripHtml(
-              event.excerpt || ""
-            ),
+    image:
+      event.featuredImage?.node?.sourceUrl || "",
 
-          image:
-            event.featuredImage?.node?.sourceUrl ||
-            null,
-
-          alt:
-            event.featuredImage?.node?.altText ||
-            event.title ||
-            "",
-
-          url:
-            event.uri ||
-            "/events/",
-        }))
-      : homeData.eventsOnDemand?.items || [];
-
-  const eventsOnDemand = {
-    ...homeData.eventsOnDemand,
-
-    headingPrefix:
-      eventHeadingPrefix,
-
-    heading:
-      eventHeading,
-
-    items:
-      dynamicEventItems,
-
-    buttonLabel:
-      homeFields?.eventSection?.buttonText ||
-      homeData.eventsOnDemand?.buttonLabel ||
-      "",
-
-    buttonUrl:
-      homeFields?.eventSection?.buttonUrl?.url ||
-      "/events/",
-  };
-
-
+    imageAlt:
+      event.featuredImage?.node?.altText || "",
+  }));
+  
   /* =========================================
      EXTERNAL ENVELOPE
   ========================================= */
@@ -352,7 +312,7 @@ export default async function InsightsPage() {
   ========================================= */
 
   const testimonialNodes =
-    testimonialResult?.allTestimonials?.nodes || [];
+    testimonialsResult?.allTestimonials?.nodes || [];
 
   const testimonials =
     testimonialNodes.map((item) => ({
@@ -370,7 +330,11 @@ export default async function InsightsPage() {
       role:
         item.testimonialFields?.clientDesignation || "",
     }));
-
+const testimonialBackgroundImage =
+  testimonialsResult?.options
+    ?.globalTestimonialSettings
+    ?.testimonialBackgroundImage
+    ?.node?.sourceUrl || "";
 
   /* =========================================
      OUTPUT
@@ -380,7 +344,7 @@ export default async function InsightsPage() {
     <main className="insights-page">
 
       {/* 1. HERO */}
-      <InsightHero
+      <InsightsHero
         data={hero}
       />
 
@@ -398,10 +362,11 @@ export default async function InsightsPage() {
       />
 
 
-      {/* 4. UPCOMING EVENTS */}
-      <EventsOnDemand
-        data={eventsOnDemand}
-      />
+      {upcomingEvents.length > 0 && (
+          <UpcomingEvents
+            events={upcomingEvents}
+          />
+        )}
 
 
       {/* 5. EXTERNAL ENVELOPE */}
@@ -414,6 +379,7 @@ export default async function InsightsPage() {
       {testimonials.length > 0 && (
         <ClientTestimonial
           items={testimonials}
+          backgroundImage={testimonialBackgroundImage}
         />
       )}
 

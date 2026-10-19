@@ -1,51 +1,69 @@
 import Link from "next/link";
+import styles from "./AboutHero.module.css";
 
 export default function AboutHero({ data }) {
   if (!data) return null;
 
-  return (
-    <section className="about-hero">
+  const {
+    video,
+    heading,
+    description,
+    buttonText,
+    buttonUrl,
+  } = data;
 
-      {data.video && (
+  return (
+    <section className={styles["about-hero"]}>
+
+      {/* BACKGROUND VIDEO */}
+      {video && (
         <video
-          className="about-hero__media"
+          className={styles["about-hero__media"]}
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
+          aria-hidden="true"
         >
-          <source
-            src={data.video}
-            type="video/mp4"
-          />
+          <source src={video} type="video/mp4" />
         </video>
       )}
 
-      <div className="about-hero__overlay"></div>
+      {/* GREEN GRADIENT OVERLAY */}
+      <div
+        className={styles["about-hero__overlay"]}
+        aria-hidden="true"
+      />
 
-      <div className="home-container about-hero__inner">
-        <div className="about-hero__content">
+      {/* CONTENT */}
+      <div className={styles["about-hero__inner"]}>
+        <div className={styles["about-hero__content"]}>
 
-          {data.heading && (
-            <h1>
-              {data.heading}
+          {heading && (
+            <h1 className={styles["about-hero__heading"]}>
+              {heading}
             </h1>
           )}
 
-          {data.description && (
-            <p>
-              {data.description}
+          {description && (
+            <p className={styles["about-hero__description"]}>
+              {description}
             </p>
           )}
 
-          {data.buttonText && (
+          {buttonText && (
             <Link
-              href={data.buttonUrl || "#"}
-              className="about-hero__button"
+              href={buttonUrl || "#"}
+              className={styles["about-hero__button"]}
             >
-              {data.buttonText}
-              <span>→</span>
+              <span>{buttonText}</span>
+              <span
+                className={styles["about-hero__arrow"]}
+                aria-hidden="true"
+              >
+                →
+              </span>
             </Link>
           )}
 

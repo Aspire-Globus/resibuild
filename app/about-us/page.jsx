@@ -1,5 +1,3 @@
-import "./about.css";
-
 import { fetchGraphQL } from "../../lib/graphql";
 
 import { ABOUT_PAGE_QUERY } from "../../lib/queries/about";
@@ -233,50 +231,59 @@ export default async function AboutPage() {
      HOME CTA REUSED HERE
   ========================= */
 
-  const podcastCTA =
-    homeFields?.cta
-      ? {
-          heading:
-            homeFields.cta.title || "",
+ const podcastCTA = homeFields?.cta
+  ? {
+      heading:
+        homeFields.cta.title || "",
 
-          buttonLabel:
-            homeFields.cta.buttonText || "",
+      buttonLabel:
+        homeFields.cta.buttonText || "",
 
-          buttonUrl:
-            homeFields.cta.buttonUrl?.url || "#",
-        }
-      : null;
+      buttonUrl:
+        homeFields.cta.buttonUrl?.url || "#",
+
+      buttonTarget:
+        homeFields.cta.buttonUrl?.target || "_self",
+
+      image:
+        homeFields.cta.overlayImage?.node?.sourceUrl || "",
+
+      imageAlt:
+        homeFields.cta.overlayImage?.node?.altText || "",
+    }
+  : null;
 
   /* =========================
      TESTIMONIALS
   ========================= */
 
-  const wpTestimonials =
-    testimonialsResult?.allTestimonials?.nodes || [];
+// WordPress testimonial CPT data
+const wpTestimonials =
+  testimonialsResult?.allTestimonials?.nodes || [];
 
-  const testimonials =
-    wpTestimonials.length > 0
-      ? wpTestimonials.map(
-          (testimonial) => ({
-            id:
-              testimonial.databaseId,
+// Map testimonial content
+const testimonials = wpTestimonials.map((testimonial) => ({
+  id: testimonial.databaseId,
 
-            quote:
-              testimonial.content
-                ?.replace(/<[^>]*>/g, "")
-                .replace(/&nbsp;/g, " ")
-                .trim() || "",
+  quote:
+    testimonial.content
+      ?.replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .trim() || "",
 
-            author:
-              testimonial.testimonialFields
-                ?.clientName || "",
+  author:
+    testimonial.testimonialFields?.clientName || "",
 
-            role:
-              testimonial.testimonialFields
-                ?.clientDesignation || "",
-          })
-        )
-      : [];
+  role:
+    testimonial.testimonialFields?.clientDesignation || "",
+}));
+
+// Global background image from ACF Options Page
+const testimonialBackgroundImage =
+  testimonialsResult?.options
+    ?.globalTestimonialSettings
+    ?.testimonialBackgroundImage
+    ?.node?.sourceUrl || "";
 
   /* =========================
      EVENTS
@@ -390,7 +397,8 @@ export default async function AboutPage() {
 
       {testimonials.length > 0 && (
         <ClientTestimonial
-          items={testimonials}
+          items={testimonials} 
+          backgroundImage={testimonialBackgroundImage}
         />
       )}
 

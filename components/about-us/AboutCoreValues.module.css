@@ -1,0 +1,361 @@
+/* =========================================
+   ABOUT CORE VALUES SECTION
+========================================= */
+
+.about-core-values {
+  position: relative;
+
+  width: 100%;
+  padding: 80px 0;
+
+  background-color: var(--white);
+
+  box-sizing: border-box;
+}
+
+/* =========================================
+   CONTAINER
+========================================= */
+
+.about-core-values__container {
+  width: min(
+    var(--container),
+    var(--container-fallback)
+  );
+
+  margin: 0 auto;
+}
+
+/* =========================================
+   SECTION HEADER
+========================================= */
+
+.about-core-values__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 35px;
+}
+
+/* =========================================
+   HEADING
+========================================= */
+
+.about-core-values__heading {
+  max-width: 750px;
+
+  margin: 0;
+
+  color: var(--teal);
+}
+
+/* GREEN HEADING TEXT */
+
+.about-core-values__heading :global(span) {
+  color: var(--lime);
+}
+
+/* =========================================
+   HEADER BUTTON
+========================================= */
+
+.about-core-values__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+
+  flex-shrink: 0;
+
+  min-width: 165px;
+  min-height: 44px;
+
+  padding: 10px 20px;
+  gap: 25px;
+
+  background-color: var(--lime);
+  color: var(--white);
+
+  font-family: var(--var-font-body);
+  font-weight: 600;
+
+  text-decoration: none;
+
+  box-sizing: border-box;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.about-core-values__button:hover {
+  background-color: var(--teal);
+  color: var(--white);
+}
+
+.about-core-values__button svg {
+  flex-shrink: 0;
+
+  transition: transform 0.3s ease;
+}
+
+.about-core-values__button:hover svg {
+  transform: translateX(4px);
+}
+
+/* =========================================
+   CORE VALUES GRID
+========================================= */
+
+.about-core-values__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 25px;
+
+  width: 100%;
+}
+
+/* =========================================
+   CORE VALUE CARD
+========================================= */
+
+.about-core-value {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+
+  aspect-ratio: 1.57 / 1;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  background-color: var(--teal);
+}
+
+/* =========================================
+   CARD IMAGE WRAPPER
+========================================= */
+
+.about-core-value__image {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 0;
+}
+
+/* =========================================
+   CARD IMAGE
+========================================= */
+
+.about-core-value__image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition: transform 0.5s ease;
+}
+
+/* IMAGE HOVER */
+
+.about-core-value:hover
+.about-core-value__image img {
+  transform: scale(1.05);
+}
+
+/* =========================================
+   TEAL GRADIENT OVERLAY
+========================================= */
+
+.about-core-value__overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  background: linear-gradient(
+    180deg,
+    rgba(0, 96, 114, 0) 0%,
+    rgba(0, 96, 114, 0.08) 35%,
+    rgba(0, 96, 114, 0.55) 70%,
+    rgba(0, 96, 114, 0.98) 100%
+  );
+
+  pointer-events: none;
+}
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.about-core-value__content {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 2;
+
+  padding: 25px 28px;
+
+  color: var(--white);
+
+  box-sizing: border-box;
+}
+
+/* =========================================
+   CARD TITLE
+========================================= */
+
+.about-core-value__title {
+  margin: 0;
+
+  color: var(--white);
+
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* =========================================
+   CARD DESCRIPTION
+========================================= */
+
+.about-core-value__text {
+  margin: 10px 0 0;
+
+  color: var(--white);
+
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =========================================
+   LAPTOP - 1199px
+========================================= */
+
+@media (max-width: 1199px) {
+  .about-core-values {
+    padding: 60px 0;
+  }
+
+  .about-core-values__header {
+    margin-bottom: 30px;
+  }
+
+  .about-core-values__grid {
+    gap: 20px;
+  }
+
+  .about-core-value__content {
+    padding: 22px;
+  }
+}
+
+/* =========================================
+   TABLET - 991px
+========================================= */
+
+@media (max-width: 991px) {
+  .about-core-values {
+    padding: 50px 0;
+  }
+
+  .about-core-values__header {
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .about-core-values__grid {
+    gap: 18px;
+  }
+
+  .about-core-value {
+    aspect-ratio: 1.4 / 1;
+  }
+
+  .about-core-value__content {
+    padding: 20px;
+  }
+}
+
+/* =========================================
+   MOBILE - 767px
+========================================= */
+
+@media (max-width: 767px) {
+  .about-core-values {
+    padding: 40px 0;
+  }
+
+  .about-core-values__header {
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .about-core-values__heading {
+    max-width: 100%;
+  }
+
+  .about-core-values__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .about-core-value {
+    aspect-ratio: 1.6 / 1;
+  }
+
+  .about-core-value__content {
+    padding: 20px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE - 480px
+========================================= */
+
+@media (max-width: 480px) {
+  .about-core-values__header {
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .about-core-values__button {
+    min-width: 150px;
+    min-height: 42px;
+    padding: 10px 15px;
+  }
+
+  .about-core-values__grid {
+    gap: 15px;
+  }
+
+  .about-core-value {
+    aspect-ratio: 1.35 / 1;
+  }
+
+  .about-core-value__content {
+    padding: 18px;
+  }
+
+  .about-core-value__text {
+    margin-top: 8px;
+  }
+}

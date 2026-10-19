@@ -1,35 +1,60 @@
+import Link from "next/link";
+import styles from "./ExternalEnvelope.module.css";
+
 export default function ExternalEnvelope({ data }) {
   if (!data) return null;
 
-  return (
-    <section className="external-envelope">
-      <div className="external-envelope__layout">
+  const {
+    heading,
+    text,
+    bookImage,
+    buttonLabel,
+    buttonUrl,
+  } = data;
 
-        <div className="external-envelope__visual">
-          {data.bookImage && (
+  return (
+    <section
+      className={styles["external-envelope"]}
+      id="external-envelope"
+    >
+      <div className={styles["external-envelope__layout"]}>
+
+        {/* LEFT - BOOK IMAGE */}
+        <div className={styles["external-envelope__visual"]}>
+          {bookImage && (
             <img
-              src={data.bookImage}
-              alt={data.heading || "External Envelope"}
+              src={bookImage}
+              alt={heading || "External Envelope"}
+              loading="lazy"
+              className={styles["external-envelope__book"]}
             />
           )}
         </div>
 
-        <div className="external-envelope__content">
-          <h2>{data.heading}</h2>
+        {/* RIGHT - CONTENT */}
+        <div className={styles["external-envelope__content"]}>
 
-          {data.text && (
-            <p>{data.text}</p>
-          )}
+          {heading && <h2>{heading}</h2>}
 
-          {data.buttonLabel && (
-            <a
-              href={data.buttonUrl || "#"}
+          {text && <p>{text}</p>}
+
+          {buttonLabel && (
+            <Link
+              href={buttonUrl || "#"}
+              className={styles["external-envelope__button"]}
             >
-              {data.buttonLabel}
-            </a>
-          )}
-        </div>
+              <span>{buttonLabel}</span>
 
+              <span
+                className={styles["external-envelope__arrow"]}
+                aria-hidden="true"
+              >
+                ⟶
+              </span>
+            </Link>
+          )}
+
+        </div>
       </div>
     </section>
   );

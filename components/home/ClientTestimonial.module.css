@@ -1,0 +1,357 @@
+/* =========================================
+   CLIENT TESTIMONIAL
+========================================= */
+
+.client-testimonial {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  padding: 65px 0 70px;
+
+  background-color: var(--teal);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  overflow: hidden;
+  isolation: isolate;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   STATIC BACKGROUND OVERLAY
+========================================= */
+
+.client-testimonial__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+    background: linear-gradient(90deg, rgba(0, 96, 114, 1) 0%, rgba(0, 96, 114, 1) 45%, rgba(0, 96, 114, 1) 100%);
+    pointer-events: none;
+    opacity: 0.92;
+}
+
+/* =========================================
+   INNER CONTAINER
+========================================= */
+
+.client-testimonial__inner {
+  position: relative;
+  z-index: 1;
+
+  width: min(
+    var(--container),
+    var(--container-fallback)
+  );
+
+  margin: 0 auto;
+  min-width: 0;
+}
+
+/* =========================================
+   OPENING QUOTE
+========================================= */
+
+.client-testimonial__quote-mark {
+  display: block;
+  height: 65px;
+  margin-bottom: 28px;
+
+  color: var(--lime);
+  font-family: Georgia, serif;
+  font-size: 125px;
+  font-weight: 700;
+  line-height: 1;
+
+  user-select: none;
+}
+
+/* =========================================
+   HEADING
+========================================= */
+
+.client-testimonial__heading {
+  max-width: 850px;
+  margin: 0 0 20px;
+
+  color: var(--white);
+}
+
+/* =========================================
+   SLIDER VIEWPORT
+========================================= */
+
+.client-testimonial__viewport {
+  width: 100%;
+  overflow: hidden;
+
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.client-testimonial__viewport.is-dragging {
+  cursor: grabbing;
+}
+
+/* =========================================
+   SLIDER TRACK
+========================================= */
+
+.client-testimonial__track {
+  display: flex;
+  width: 100%;
+
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(
+    0.45,
+    0,
+    0.25,
+    1
+  );
+
+  will-change: transform;
+}
+
+/* =========================================
+   SLIDE
+========================================= */
+
+.client-testimonial__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   TESTIMONIAL CONTENT
+========================================= */
+
+.client-testimonial__content {
+  width: 100%;
+  max-width: 1150px;
+}
+
+/* =========================================
+   TESTIMONIAL TEXT
+========================================= */
+
+.client-testimonial__content blockquote {
+  max-width: 1120px;
+  margin: 0 0 20px;
+
+  color: var(--white);
+  font-family: var(--var-font-body);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* =========================================
+   AUTHOR
+========================================= */
+
+.client-testimonial__author {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.client-testimonial__author strong {
+  color: var(--lime);
+  font-family: var(--var-font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.client-testimonial__author span {
+  color: var(--white);
+  font-family: var(--var-font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* =========================================
+   CLOSING QUOTE
+========================================= */
+
+.client-testimonial__end-quote {
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+
+  color: transparent;
+  font-family: Georgia, serif;
+  font-size: 125px;
+  font-weight: 700;
+line-height: 0.3;
+
+  -webkit-text-stroke: 1.5px var(--lime);
+  opacity: 0.8;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1600px) {
+
+  .client-testimonial__content blockquote {
+    font-size: 22px;
+  }
+}
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+  .client-testimonial {
+    padding: 55px 0 60px;
+  }
+
+  .client-testimonial__content blockquote {
+    font-size: 18px;
+  }
+
+  .client-testimonial__quote-mark {
+    font-size: 110px;
+    height: 58px;
+  }
+
+  .client-testimonial__end-quote {
+    font-size: 110px;
+  }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+  .client-testimonial {
+    padding: 50px 0 55px;
+  }
+
+
+  .client-testimonial__content blockquote {
+    max-width: 90%;
+    font-size: 16px;
+  }
+
+  .client-testimonial__quote-mark {
+    font-size: 95px;
+    height: 52px;
+  }
+
+  .client-testimonial__end-quote {
+    font-size: 95px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+  .client-testimonial {
+    padding: 45px 0 50px;
+  }
+
+  .client-testimonial__heading {
+    max-width: 100%;
+    font-size: 26px;
+    margin-bottom: 18px;
+  }
+
+  .client-testimonial__content blockquote {
+    max-width: 100%;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .client-testimonial__quote-mark {
+    font-size: 85px;
+    height: 45px;
+  }
+
+  .client-testimonial__end-quote {
+    right: 5px;
+    bottom: -25px;
+    font-size: 85px;
+    opacity: 0.55;
+  }
+
+  .client-testimonial__author strong {
+    font-size: 18px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+  .client-testimonial {
+    padding: 40px 0 50px;
+  }
+
+  .client-testimonial__heading {
+    font-size: 23px;
+  }
+
+  .client-testimonial__content blockquote {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .client-testimonial__quote-mark {
+    font-size: 75px;
+    height: 40px;
+  }
+
+  .client-testimonial__end-quote {
+    font-size: 75px;
+    bottom: -20px;
+  }
+
+  .client-testimonial__author strong {
+    font-size: 17px;
+  }
+
+  .client-testimonial__author span {
+    font-size: 12px;
+  }
+}
+
+/* =========================================
+   EXTRA SMALL MOBILE
+========================================= */
+
+@media (max-width: 359px) {
+  .client-testimonial__heading {
+    font-size: 21px;
+  }
+
+  .client-testimonial__content blockquote {
+    font-size: 14px;
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .client-testimonial__track {
+    transition-duration: 0ms !important;
+  }
+}

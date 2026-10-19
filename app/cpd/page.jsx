@@ -1,5 +1,3 @@
-import "./cpd.css";
-
 import { fetchGraphQL } from "../../lib/graphql";
 import { CPD_PAGE_QUERY } from "../../lib/queries/cpd";
 import { HOME_PAGE_QUERY } from "../../lib/queries/home";
@@ -19,7 +17,7 @@ export default async function CpdPage() {
   const [
     cpdResult,
     homeResult,
-    testimonialResult,
+    testimonialsResult,
   ] = await Promise.all([
     fetchGraphQL(CPD_PAGE_QUERY),
     fetchGraphQL(HOME_PAGE_QUERY),
@@ -142,13 +140,19 @@ export default async function CpdPage() {
 
           buttonUrl:
             homeFields.cta.buttonUrl?.url || "#",
+            
+          image:
+            homeFields.cta.overlayImage?.node?.sourceUrl || "",
+
+          imageAlt:
+            homeFields.cta.overlayImage?.node?.altText || "",
         }
       : null;
 
   /* TESTIMONIALS */
 
   const testimonials =
-    testimonialResult?.allTestimonials?.nodes?.map(
+    testimonialsResult?.allTestimonials?.nodes?.map(
       (item) => ({
         id: item.databaseId,
 
@@ -164,7 +168,14 @@ export default async function CpdPage() {
         role:
           item.testimonialFields?.clientDesignation || "",
       })
+      
     ) || [];
+
+    const testimonialBackgroundImage =
+  testimonialsResult?.options
+    ?.globalTestimonialSettings
+    ?.testimonialBackgroundImage
+    ?.node?.sourceUrl || "";
 
   return (
     <main className="cpd-page">
@@ -188,6 +199,7 @@ export default async function CpdPage() {
       {testimonials.length > 0 && (
         <ClientTestimonial
           items={testimonials}
+          backgroundImage={testimonialBackgroundImage}
         />
       )}
 

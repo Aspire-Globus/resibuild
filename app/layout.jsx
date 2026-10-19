@@ -1,15 +1,25 @@
 import "./globals.css";
 
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/global/header/Header";
+import Footer from "../components/global/footer/Footer";
 
 import { fetchGraphQL } from "../lib/graphql";
 import { GLOBAL_QUERY } from "../lib/queries/global";
 
 export const metadata = {
-  title: "Resibuild",
+   title: "Resibuild",
   description:
     "Construction events, CPD courses, podcasts and industry insights.",
+  icons: {
+    icon: [
+      {
+        url: "/images/Resifavicon.png",
+        sizes: "any",
+      },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default async function RootLayout({ children }) {
@@ -37,6 +47,9 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet"   href="https://s.w.org/wp-includes/css/dashicons.css" />
+      </head>
       <body>
         <Header
           data={header}

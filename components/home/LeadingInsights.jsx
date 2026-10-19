@@ -1,55 +1,65 @@
+import styles from "./LeadingInsights.module.css";
+
 export default function LeadingInsights({ data }) {
   if (!data) return null;
 
-  return (
-    <section className="leading-insights">
-      <div className="leading-insights__inner">
+  const image = data.image || null;
 
-        <div className="leading-insights__image">
-          <img
-            src={data.image}
-            alt={data.title || ""}
-          />
+  const paragraphs = data.description
+    ? String(data.description)
+        .split(/\r?\n\s*\r?\n/)
+        .map((paragraph) => paragraph.trim())
+        .filter(Boolean)
+    : [];
+
+  return (
+    <section className={styles["leading-insights"]}>
+      <div className={styles["leading-insights__inner"]}>
+
+        {/* LEFT IMAGE */}
+        <div className={styles["leading-insights__image"]}>
+          {image && (
+            <img
+              src={image}
+              alt={data.title || "Resibuild Events"}
+              loading="lazy"
+            />
+          )}
         </div>
 
-        <div className="leading-insights__content">
-          <div className="leading-insights__content-inner">
+        {/* RIGHT CONTENT */}
+        <div className={styles["leading-insights__content"]}>
+          <div className={styles["leading-insights__content-inner"]}>
 
-            <h2>{data.title}</h2>
+            {/* HEADING */}
+            {data.title && (
+              <h2>{data.title}</h2>
+            )}
 
-            {data.description && (
-              <div className="leading-insights__description">
-                {String(data.description)
-                  .split(/\n\s*\n/)
-                  .filter(Boolean)
-                  .map((paragraph, index) => (
-                    <p key={index}>
-                      {paragraph}
-                    </p>
-                  ))}
+            {/* DESCRIPTION */}
+            {paragraphs.length > 0 && (
+              <div className={styles["leading-insights__description"]}>
+                {paragraphs.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
               </div>
             )}
 
-            <div className="leading-insights__stats">
+            {/* STATISTICS */}
+            <div className={styles["leading-insights__stats"]}>
 
-              <div>
-                <strong>
-                  {data.establishedYear}
-                </strong>
+              <div className={styles["leading-insights__stat"]}>
+                <strong>{data.establishedYear}</strong>
                 <span>Established</span>
               </div>
 
-              <div>
-                <strong>
-                  {data.cpdEvents}
-                </strong>
+              <div className={styles["leading-insights__stat"]}>
+                <strong>{data.cpdEvents}</strong>
                 <span>CPD Events</span>
               </div>
 
-              <div>
-                <strong>
-                  {data.peopleEducated}
-                </strong>
+              <div className={styles["leading-insights__stat"]}>
+                <strong>{data.peopleEducated}</strong>
                 <span>People Educated</span>
               </div>
 

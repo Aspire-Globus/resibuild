@@ -1,0 +1,6 @@
+footer .newsletter-flex>p{
+    display: flex;
+}
+footer .newsletter-flex br{
+    display: none;
+}

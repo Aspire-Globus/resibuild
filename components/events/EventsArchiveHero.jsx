@@ -1,59 +1,74 @@
 import Link from "next/link";
+import styles from "./EventsArchiveHero.module.css";
 
 export default function EventsArchiveHero({ data }) {
   if (!data) return null;
 
-  return (
-    <section className="events-hero">
+  const {
+    video,
+    title,
+    description,
+    buttonText,
+    buttonUrl,
+  } = data;
 
-      {data.video && (
+  return (
+    <section className={styles["events-hero"]}>
+
+      {/* BACKGROUND VIDEO */}
+      {video && (
         <video
-          className="events-hero__video"
+          className={styles["events-hero__media"]}
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
+          aria-hidden="true"
         >
-          <source
-            src={data.video}
-            type="video/mp4"
-          />
+          <source src={video} type="video/mp4" />
         </video>
       )}
 
-      <div className="events-hero__overlay" />
+      {/* GREEN GRADIENT OVERLAY */}
+      <div
+        className={styles["events-hero__overlay"]}
+        aria-hidden="true"
+      />
 
-      <div className="events-hero__pattern" />
+      {/* CONTENT */}
+      <div className={styles["events-hero__inner"]}>
+        <div className={styles["events-hero__content"]}>
 
-      <div className="events-container">
-
-        <div className="events-hero__content">
-
-          {data.title && (
-            <h1>
-              {data.title}
+          {title && (
+            <h1 className={styles["events-hero__heading"]}>
+              {title}
             </h1>
           )}
 
-          {data.description && (
-            <p>
-              {data.description}
+          {description && (
+            <p className={styles["events-hero__description"]}>
+              {description}
             </p>
           )}
 
-          {data.buttonText && (
+          {buttonText && (
             <Link
-              href={data.buttonUrl || "#"}
-              className="events-hero__button"
+              href={buttonUrl || "#"}
+              className={styles["events-hero__button"]}
             >
-              {data.buttonText}
-              <span>→</span>
+              <span>{buttonText}</span>
+
+              <span
+                className={styles["events-hero__arrow"]}
+                aria-hidden="true"
+              >
+                →
+              </span>
             </Link>
           )}
 
         </div>
-
       </div>
 
     </section>

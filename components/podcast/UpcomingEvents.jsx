@@ -1,64 +1,84 @@
 import Link from "next/link";
+import styles from "./UpcomingEvents.module.css";
 
 export default function UpcomingEvents({
   events = [],
 }) {
+  const eventItems = Array.isArray(events)
+    ? events.slice(0, 4)
+    : [];
 
-  if (!events.length) return null;
+  if (!eventItems.length) return null;
 
   return (
+    <section
+      className={styles["podcast-upcoming"]}
+      id="podcast-upcoming"
+    >
+      <div className={styles["podcast-upcoming__container"]}>
 
-    <section className="podcast-upcoming">
+        {/* =====================================
+            SECTION HEADER
+        ===================================== */}
 
-      <div className="podcast-container">
+        <div className={styles["podcast-upcoming__header"]}>
 
+          {/* HEADING */}
 
-        <div className="podcast-upcoming__header">
+          <div className={styles["podcast-upcoming__heading"]}>
+            <h2>
+              <span>Upcoming Events</span>
+              {" - Finding inspiration in every turn"}
+            </h2>
+          </div>
 
-          <h2>
-
-            <span>
-              Upcoming Events
-            </span>
-
-            {" "} - Finding inspiration in every turn
-
-          </h2>
-
+          {/* FIND OUT MORE BUTTON */}
 
           <Link
             href="/events/"
-            className="podcast-upcoming__all"
+            className={styles["podcast-upcoming__all"]}
           >
+            <span>Find Out More</span>
 
-            Find Out More
-
-            <span>
-              →
-            </span>
-
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M5 12H19M13 6L19 12L13 18"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </Link>
 
         </div>
 
+        {/* =====================================
+            EVENTS GRID
+        ===================================== */}
 
-        <div className="podcast-upcoming__grid">
+        <div className={styles["podcast-upcoming__grid"]}>
 
-          {events.map((event) => (
-
+          {eventItems.map((event, index) => (
             <article
-              className="podcast-upcoming__card"
-              key={event.id}
+              className={styles["podcast-upcoming__card"]}
+              key={event.id ?? index}
             >
 
+              {/* EVENT IMAGE */}
 
               <Link
                 href={event.url || "#"}
-                className="podcast-upcoming__image"
+                className={styles["podcast-upcoming__image"]}
+                aria-label={event.title || "View event"}
               >
-
-                {event.image && (
-
+                {event.image ? (
                   <img
                     src={event.image}
                     alt={
@@ -66,61 +86,72 @@ export default function UpcomingEvents({
                       event.title ||
                       ""
                     }
+                    loading="lazy"
                   />
-
+                ) : (
+                  <div
+                    className={styles["podcast-upcoming__placeholder"]}
+                  >
+                    Resibuild
+                  </div>
                 )}
-
               </Link>
 
+              {/* EVENT CONTENT */}
 
-              <div className="podcast-upcoming__content">
+              <div className={styles["podcast-upcoming__content"]}>
 
-                <h3>
+                {/* TITLE */}
 
-                  <Link
-                    href={event.url || "#"}
-                  >
-                    {event.title}
-                  </Link>
-
-                </h3>
-
-
-                {event.excerpt && (
-
-                  <p>
-                    {event.excerpt}
-                  </p>
-
+                {event.title && (
+                  <h3 className={styles["podcast-upcoming__title"]}>
+                    <Link href={event.url || "#"}>
+                      {event.title}
+                    </Link>
+                  </h3>
                 )}
 
+                {/* EXCERPT */}
+
+                {event.excerpt && (
+                  <p className={styles["podcast-upcoming__excerpt"]}>
+                    {event.excerpt}
+                  </p>
+                )}
+
+                {/* READ MORE */}
 
                 <Link
                   href={event.url || "#"}
-                  className="podcast-upcoming__read"
+                  className={styles["podcast-upcoming__read"]}
                 >
+                  <span>Read More</span>
 
-                  Read More
-
-                  <span>
-                    →
-                  </span>
-
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M5 12H19M13 6L19 12L13 18"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </Link>
 
               </div>
 
-
             </article>
-
           ))}
 
         </div>
 
       </div>
-
     </section>
-
   );
-
 }

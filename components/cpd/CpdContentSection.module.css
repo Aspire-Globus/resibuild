@@ -1,0 +1,381 @@
+.cpd-content-section {
+  position: relative;
+  width: 100%;
+  padding: 80px 0;
+  box-sizing: border-box;
+}
+
+.cpd-content-section--light {
+  background-color: var(--white);
+}
+
+.cpd-content-section--dark {
+  background-color: var(--off-white);
+}
+
+.cpd-content-section__container {
+  width: min(var(--container), var(--container-fallback));
+  margin: 0 auto;
+}
+
+.cpd-content-section__top {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 50px;
+  text-align: center;
+}
+
+.cpd-content-section__title {
+  margin: 0 0 20px;
+  color: var(--teal);
+  font-family: var(--var-font-heading);
+}
+
+.cpd-content-section__title :global(span),
+.cpd-content-section__title :global(.hightlight-green),
+.cpd-content-section__title :global(.highlight-green) {
+  color: var(--lime);
+}
+
+.cpd-content-section__intro {
+  color: var(--text);
+  font-family: var(--var-font-body);
+  line-height: 1.6;
+}
+
+.cpd-content-section__intro :global(p) {
+  margin: 0 0 15px;
+  color: inherit;
+  line-height: inherit;
+}
+
+.cpd-content-section__intro :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.cpd-content-section__list {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  width: 100%;
+}
+
+.cpd-content-card {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 60px;
+  width: 100%;
+}
+
+.cpd-content-card--reverse .cpd-content-card__content {
+  order: 2;
+}
+
+.cpd-content-card--reverse .cpd-content-card__image {
+  order: 1;
+}
+
+.cpd-content-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.cpd-content-card__heading {
+  margin: 0 0 20px;
+  color: var(--teal);
+  font-family: var(--var-font-heading);
+}
+
+.cpd-content-card__heading :global(span),
+.cpd-content-card__heading :global(.hightlight-green),
+.cpd-content-card__heading :global(.highlight-green) {
+  color: var(--lime);
+}
+.cpd-content-card__text h4{
+    margin: 0 0 8px;
+    color: var(--teal);
+}
+.cpd-content-card__text {
+  width: 100%;
+  color: var(--text);
+  font-family: var(--var-font-body);
+  line-height: 1.6;
+}
+
+.cpd-content-card__text :global(p) {
+  margin: 0 0 15px;
+  color: inherit;
+  line-height: inherit;
+}
+
+.cpd-content-card__text :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.cpd-content-card__text :global(ul),
+.cpd-content-card__text :global(ol) {
+  margin: 0 0 20px;
+  padding-left: 25px;
+}
+
+.cpd-content-card__text :global(li) {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.cpd-content-card__text :global(li:last-child) {
+  margin-bottom: 0;
+}
+
+.cpd-content-card__text :global(a) {
+  color: var(--lime);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.cpd-content-card__text :global(a:hover) {
+  color: var(--teal);
+}
+
+.cpd-content-card__buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.cpd-content-card__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  min-height: 48px;
+  padding: 12px 24px;
+  background-color: var(--lime);
+  border-color: var(--lime);
+  color: var(--white);
+  font-family: var(--var-font-body);
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition:
+  background-color 0.3s ease,
+  border-color 0.3s ease,
+  color 0.3s ease,
+  transform 0.3s ease;
+}
+
+.cpd-content-card__button:hover {
+    background-color: var(--teal);
+    border: 1px solid var(--teal);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.cpd-content-card__button--secondary {
+  background-color: transparent;
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.cpd-content-card__button--secondary:hover {
+  background-color: var(--teal);
+  border-color: var(--teal);
+  color: var(--white);
+}
+
+.cpd-content-card__button svg {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.cpd-content-card__button:hover svg {
+  transform: translateX(4px);
+}
+
+.cpd-content-card__image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.cpd-content-card__image img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.cpd-content-card__placeholder {
+  width: 100%;
+  min-height: 300px;
+  background-color: var(--light-gray);
+}
+
+.cpd-content-card__button:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 4px;
+}
+
+@media (max-width: 1199px) {
+  .cpd-content-section {
+    padding: 60px 0;
+  }
+
+  .cpd-content-section__top {
+    margin-bottom: 40px;
+  }
+
+  .cpd-content-section__list {
+    gap: 60px;
+  }
+
+  .cpd-content-card {
+    gap: 40px;
+  }
+
+  .cpd-content-card__heading {
+    margin-bottom: 18px;
+  }
+}
+
+@media (max-width: 991px) {
+  .cpd-content-section {
+    padding: 50px 0;
+  }
+
+  .cpd-content-section__top {
+    margin-bottom: 35px;
+  }
+
+  .cpd-content-section__list {
+    gap: 50px;
+  }
+
+  .cpd-content-card {
+    gap: 30px;
+  }
+
+  .cpd-content-card__heading {
+    margin-bottom: 15px;
+  }
+
+  .cpd-content-card__buttons {
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .cpd-content-card__button {
+    gap: 15px;
+    padding: 10px 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .cpd-content-section {
+    padding: 40px 0;
+  }
+
+  .cpd-content-section__top {
+    margin-bottom: 30px;
+  }
+
+  .cpd-content-section__title {
+    margin-bottom: 15px;
+  }
+
+  .cpd-content-section__list {
+    gap: 45px;
+  }
+
+  .cpd-content-card {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .cpd-content-card__content,
+  .cpd-content-card--reverse .cpd-content-card__content {
+    order: 2;
+    text-align: center;
+    align-items: center;
+  }
+
+  .cpd-content-card__image,
+  .cpd-content-card--reverse .cpd-content-card__image {
+    order: 1;
+  }
+  .cpd-content-card__image img,
+  .cpd-content-card--reverse .cpd-content-card__image img {
+    max-height: 40px;
+    width: auto;
+  }
+
+  .cpd-content-card__heading {
+    margin-bottom: 15px;
+  }
+
+  .cpd-content-card__buttons {
+    gap: 12px;
+    margin-top: 20px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .cpd-content-card__button {
+    min-height: 44px;
+    padding: 10px 18px;
+  }
+
+  .cpd-content-card__placeholder {
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cpd-content-section__list {
+    gap: 40px;
+  }
+
+  .cpd-content-card {
+    gap: 20px;
+  }
+
+  .cpd-content-card__buttons {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .cpd-content-card__button {
+    gap: 12px;
+    padding: 10px 15px;
+  }
+
+  .cpd-content-card__placeholder {
+    min-height: 180px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cpd-content-card__button,
+  .cpd-content-card__button svg,
+  .cpd-content-card__text :global(a) {
+    transition: none;
+  }
+
+  .cpd-content-card__button:hover,
+  .cpd-content-card__button:hover svg {
+    transform: none;
+  }
+}

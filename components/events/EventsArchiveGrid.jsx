@@ -1,50 +1,144 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import styles from "./EventsArchiveGrid.module.css";
 
 const EVENTS_PER_PAGE = 12;
+const SKELETON_DURATION = 350;
+
+export function EventsSkeleton() {
+  return (
+    <div
+      className={styles["events-skeleton"]}
+      role="status"
+      aria-live="polite"
+      aria-label="Loading events"
+    >
+      <span className={styles["events-skeleton__sr-only"]}>
+        Loading events...
+      </span>
+
+      <div className={styles["events-archive__grid"]}>
+        {Array.from({ length: EVENTS_PER_PAGE }).map((_, index) => (
+          <article
+            key={index}
+            className={styles["events-skeleton__card"]}
+            aria-hidden="true"
+          >
+            <div className={styles["events-skeleton__image"]} />
+
+            <div className={styles["events-skeleton__content"]}>
+              <div
+                className={`${styles["events-skeleton__line"]} ${styles["events-skeleton__title"]}`}
+              />
+
+              <div
+                className={`${styles["events-skeleton__line"]} ${styles["events-skeleton__title-short"]}`}
+              />
+
+              <div
+                className={`${styles["events-skeleton__line"]} ${styles["events-skeleton__text"]}`}
+              />
+
+              <div
+                className={`${styles["events-skeleton__line"]} ${styles["events-skeleton__text"]}`}
+              />
+
+              <div
+                className={`${styles["events-skeleton__line"]} ${styles["events-skeleton__text-short"]}`}
+              />
+
+              <div
+                className={`${styles["events-skeleton__line"]} ${styles["events-skeleton__read-more"]}`}
+              />
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function EventsArchiveGrid({
   title = "",
   events = [],
+  loading = false,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isPaginating, setIsPaginating] = useState(false);
+
+  const sectionRef = useRef(null);
+  const initialTimerRef = useRef(null);
+  const paginationTimerRef = useRef(null);
+
+  const eventItems = Array.isArray(events) ? events : [];
 
   const totalPages = Math.max(
     1,
-    Math.ceil(events.length / EVENTS_PER_PAGE)
+    Math.ceil(eventItems.length / EVENTS_PER_PAGE)
   );
 
+  const activePage = Math.min(currentPage, totalPages);
+
   useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages);
-    }
-  }, [currentPage, totalPages]);
+    initialTimerRef.current = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, SKELETON_DURATION);
+
+    return () => {
+      if (initialTimerRef.current) {
+        clearTimeout(initialTimerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (paginationTimerRef.current) {
+        clearTimeout(paginationTimerRef.current);
+      }
+    };
+  }, []);
 
   const currentEvents = useMemo(() => {
-    const start =
-      (currentPage - 1) * EVENTS_PER_PAGE;
+    const start = (activePage - 1) * EVENTS_PER_PAGE;
 
-    const end =
-      start + EVENTS_PER_PAGE;
-
-    return events.slice(start, end);
-  }, [events, currentPage]);
+    return eventItems.slice(
+      start,
+      start + EVENTS_PER_PAGE
+    );
+  }, [eventItems, activePage]);
 
   const changePage = (page) => {
-    if (page < 1 || page > totalPages) return;
+    if (
+      loading ||
+      isInitialLoading ||
+      isPaginating ||
+      page < 1 ||
+      page > totalPages ||
+      page === activePage
+    ) {
+      return;
+    }
 
-    setCurrentPage(page);
+    if (paginationTimerRef.current) {
+      clearTimeout(paginationTimerRef.current);
+    }
 
-    setTimeout(() => {
-      document
-        .querySelector(".events-archive")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-    }, 50);
+    setIsPaginating(true);
+
+    sectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+
+    paginationTimerRef.current = setTimeout(() => {
+      setCurrentPage(page);
+      setIsPaginating(false);
+      paginationTimerRef.current = null;
+    }, SKELETON_DURATION);
   };
 
   const getPageNumbers = () => {
@@ -55,11 +149,11 @@ export default function EventsArchiveGrid({
       );
     }
 
-    if (currentPage <= 4) {
+    if (activePage <= 4) {
       return [1, 2, 3, 4, 5, "...", totalPages];
     }
 
-    if (currentPage >= totalPages - 3) {
+    if (activePage >= totalPages - 3) {
       return [
         1,
         "...",
@@ -74,25 +168,31 @@ export default function EventsArchiveGrid({
     return [
       1,
       "...",
-      currentPage - 1,
-      currentPage,
-      currentPage + 1,
+      activePage - 1,
+      activePage,
+      activePage + 1,
       "...",
       totalPages,
     ];
   };
 
-  if (!events.length) {
+  const showSkeleton =
+    loading || isInitialLoading || isPaginating;
+
+  if (!eventItems.length && !showSkeleton) {
     return null;
   }
 
   return (
-    <section className="events-archive">
-
-      <div className="events-container">
-
+    <section
+      ref={sectionRef}
+      className={styles["events-archive"]}
+      id="events-archive"
+      aria-busy={showSkeleton}
+    >
+      <div className={styles["events-archive__container"]}>
         {title && (
-          <div className="events-archive__heading">
+          <div className={styles["events-archive__heading"]}>
             <h2
               dangerouslySetInnerHTML={{
                 __html: title,
@@ -101,132 +201,146 @@ export default function EventsArchiveGrid({
           </div>
         )}
 
-        <div className="events-archive__grid">
-
-          {currentEvents.map((event) => (
-            <article
-              className="events-archive__card"
-              key={event.id}
-            >
-
-              <Link
-                href={event.url || "#"}
-                className="events-archive__image"
+        {showSkeleton ? (
+          <EventsSkeleton />
+        ) : (
+          <div className={styles["events-archive__grid"]}>
+            {currentEvents.map((event, index) => (
+              <article
+                className={styles["events-archive__card"]}
+                key={event.id ?? `${activePage}-${index}`}
               >
-                {event.image ? (
-                  <img
-                    src={event.image}
-                    alt={
-                      event.imageAlt ||
-                      event.title ||
-                      ""
-                    }
-                  />
-                ) : (
-                  <div className="events-archive__placeholder">
-                    Resibuild
-                  </div>
-                )}
-              </Link>
-
-              <div className="events-archive__content">
-
-                {event.title && (
-                  <h3>
-                    <Link href={event.url || "#"}>
-                      {event.title}
-                    </Link>
-                  </h3>
-                )}
-
-                {event.excerpt && (
-                  <p>
-                    {event.excerpt}
-                  </p>
-                )}
-
                 <Link
                   href={event.url || "#"}
-                  className="events-archive__read-more"
+                  className={styles["events-archive__image"]}
+                  aria-label={event.title || "View event"}
                 >
-                  Read More
-
-                  <span>
-                    →
-                  </span>
+                  {event.image ? (
+                    <img
+                      src={event.image}
+                      alt={
+                        event.imageAlt ||
+                        event.title ||
+                        ""
+                      }
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div
+                      className={
+                        styles["events-archive__placeholder"]
+                      }
+                    >
+                      Resibuild
+                    </div>
+                  )}
                 </Link>
 
-              </div>
+                <div className={styles["events-archive__content"]}>
+                  {event.title && (
+                    <h3 className={styles["events-archive__title"]}>
+                      <Link href={event.url || "#"}>
+                        {event.title}
+                      </Link>
+                    </h3>
+                  )}
 
-            </article>
-          ))}
+                  {event.excerpt && (
+                    <p className={styles["events-archive__excerpt"]}>
+                      {event.excerpt}
+                    </p>
+                  )}
 
-        </div>
+                  <Link
+                    href={event.url || "#"}
+                    className={styles["events-archive__read-more"]}
+                  >
+                    <span>Read More</span>
+
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M5 12H19M13 6L19 12L13 18"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
 
         {totalPages > 1 && (
           <nav
-            className="events-pagination"
+            className={styles["events-pagination"]}
             aria-label="Events pagination"
           >
-
             <button
               type="button"
-              className="events-pagination__button"
-              disabled={currentPage === 1}
-              onClick={() =>
-                changePage(currentPage - 1)
-              }
+              className={styles["events-pagination__button"]}
+              disabled={activePage === 1 || showSkeleton}
+              onClick={() => changePage(activePage - 1)}
               aria-label="Previous page"
             >
               ‹
             </button>
 
-            {getPageNumbers().map(
-              (page, index) =>
-                page === "..." ? (
-                  <span
-                    className="events-pagination__dots"
-                    key={`dots-${index}`}
-                  >
-                    ...
-                  </span>
-                ) : (
-                  <button
-                    type="button"
-                    key={page}
-                    onClick={() =>
-                      changePage(page)
-                    }
-                    className={`events-pagination__number ${
-                      currentPage === page
-                        ? "active"
-                        : ""
-                    }`}
-                  >
-                    {page}
-                  </button>
-                )
+            {getPageNumbers().map((page, index) =>
+              page === "..." ? (
+                <span
+                  className={styles["events-pagination__dots"]}
+                  key={`dots-${index}`}
+                  aria-hidden="true"
+                >
+                  ...
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  key={page}
+                  onClick={() => changePage(page)}
+                  disabled={showSkeleton}
+                  aria-label={`Go to page ${page}`}
+                  aria-current={
+                    activePage === page
+                      ? "page"
+                      : undefined
+                  }
+                  className={[
+                    styles["events-pagination__number"],
+                    activePage === page
+                      ? styles["events-pagination__number--active"]
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  {page}
+                </button>
+              )
             )}
 
             <button
               type="button"
-              className="events-pagination__button"
-              disabled={
-                currentPage === totalPages
-              }
-              onClick={() =>
-                changePage(currentPage + 1)
-              }
+              className={styles["events-pagination__button"]}
+              disabled={activePage === totalPages || showSkeleton}
+              onClick={() => changePage(activePage + 1)}
               aria-label="Next page"
             >
               ›
             </button>
-
           </nav>
         )}
-
       </div>
-
     </section>
   );
 }

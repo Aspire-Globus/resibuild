@@ -1,0 +1,487 @@
+/* =========================================
+   INSPIRATION NEWS SECTION
+========================================= */
+
+.inspiration-news {
+  width: 100%;
+  padding: 65px 0 75px;
+  background: var(--teal);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* =========================================
+   CONTAINER
+========================================= */
+
+.inspiration-news__container {
+  width: min(
+    var(--container),
+    var(--container-fallback)
+  );
+  margin: 0 auto;
+  min-width: 0;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.inspiration-news__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 35px;
+  margin-bottom: 45px;
+}
+
+.inspiration-news__heading {
+  max-width: 1000px;
+  margin: 0;
+
+  color: var(--white);
+  font-family: var(--var-font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* =========================================
+   SLIDER CONTROLS
+========================================= */
+
+.inspiration-news__controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.inspiration-news__controls button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+  padding: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 0;
+
+  background: transparent;
+  color: var(--white);
+
+  font-family: Arial, sans-serif;
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.inspiration-news__controls button span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.inspiration-news__controls button:hover:not(:disabled) {
+  background: var(--white);
+  color: var(--teal);
+  border-color: var(--white);
+}
+
+.inspiration-news__controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.inspiration-news__controls button:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 3px;
+}
+
+/* =========================================
+   SLIDER VIEWPORT
+========================================= */
+
+.inspiration-news__viewport {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+/* =========================================
+   SLIDER TRACK
+========================================= */
+
+.inspiration-news__grid {
+  --visible-cards: 3;
+  --card-gap: 52px;
+
+  display: flex;
+  align-items: stretch;
+  gap: var(--card-gap);
+
+  width: 100%;
+  min-width: 0;
+
+  transform: translate3d(
+    calc(
+      -1 * var(--slide-index) *
+      (
+        (100% - (var(--visible-cards) - 1) * var(--card-gap))
+        / var(--visible-cards)
+        + var(--card-gap)
+      )
+    ),
+    0,
+    0
+  );
+
+  transition:
+    transform var(--slide-duration, 750ms)
+    cubic-bezier(0.45, 0, 0.25, 1);
+
+  will-change: transform;
+}
+
+/* =========================================
+   CARD
+========================================= */
+
+.inspiration-news-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  flex: 0 0 calc(
+    (100% - (var(--visible-cards) - 1) * var(--card-gap))
+    / var(--visible-cards)
+  );
+
+  min-width: 0;
+  min-height: 285px;
+  padding: 28px;
+
+  background: var(--off-white);
+  box-sizing: border-box;
+
+  transition:
+    box-shadow 0.3s ease;
+}
+
+.inspiration-news-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================
+   CARD TITLE
+========================================= */
+
+.inspiration-news-card__title {
+  margin: 0 0 16px;
+
+  color: var(--teal);
+  font-family: var(--var-font-heading);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.inspiration-news-card__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.inspiration-news-card__title a:hover {
+  color: var(--lime);
+}
+
+/* =========================================
+   CARD DESCRIPTION
+========================================= */
+
+.inspiration-news-card__excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+
+  margin: 0 0 24px;
+
+  color: var(--text);
+  font-family: var(--var-font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.65;
+
+  overflow: hidden;
+}
+
+/* =========================================
+   READ MORE
+========================================= */
+
+.inspiration-news-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: auto;
+
+  color: var(--lime);
+  font-family: var(--var-font-body);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+
+  transition: color 0.25s ease;
+}
+
+.inspiration-news-card__link:hover {
+  color: var(--teal);
+}
+
+/* =========================================
+   READ MORE ARROW
+========================================= */
+
+.inspiration-news-card__arrow {
+  display: inline-block;
+
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 0.8;
+
+  transition: transform 0.25s ease;
+}
+
+.inspiration-news-card__link:hover
+.inspiration-news-card__arrow {
+  transform: translateX(5px);
+}
+
+/* =========================================
+   LAPTOP
+   992px - 1199px
+========================================= */
+
+@media (max-width: 1199px) {
+  .inspiration-news {
+    padding: 55px 0 65px;
+  }
+
+  .inspiration-news__header {
+    gap: 25px;
+    margin-bottom: 40px;
+  }
+
+  .inspiration-news__grid {
+    --visible-cards: 3;
+    --card-gap: 24px;
+  }
+
+  .inspiration-news-card {
+    min-height: 270px;
+    padding: 24px;
+  }
+
+  .inspiration-news-card__title {
+    font-size: 22px;
+  }
+
+  .inspiration-news-card__excerpt {
+    font-size: 15px;
+  }
+}
+
+/* =========================================
+   TABLET
+   768px - 991px
+========================================= */
+
+@media (max-width: 991px) {
+  .inspiration-news {
+    padding: 50px 0 55px;
+  }
+
+  .inspiration-news__header {
+    gap: 20px;
+    margin-bottom: 35px;
+  }
+
+  .inspiration-news__heading {
+    max-width: 650px;
+  }
+
+  .inspiration-news__grid {
+    --visible-cards: 3;
+    --card-gap: 20px;
+  }
+
+  .inspiration-news-card {
+    min-height: 260px;
+    padding: 20px;
+  }
+
+  .inspiration-news-card__title {
+    font-size: 18px;
+  }
+
+  .inspiration-news-card__link {
+    font-size: 15px;
+  }
+
+  .inspiration-news-card__arrow {
+    font-size: 22px;
+  }
+}
+
+/* =========================================
+   MOBILE
+   481px - 767px
+   SHOW 2 CARDS
+========================================= */
+
+@media (max-width: 767px) {
+  .inspiration-news {
+    padding: 45px 0 50px;
+  }
+
+  .inspiration-news__header {
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .inspiration-news__controls {
+    gap: 5px;
+  }
+
+  .inspiration-news__controls button {
+    width: 34px;
+    height: 34px;
+    font-size: 28px;
+  }
+
+  .inspiration-news__grid {
+    --visible-cards: 2;
+    --card-gap: 20px;
+  }
+
+  .inspiration-news-card {
+    min-height: 220px;
+    padding: 25px;
+  }
+
+  .inspiration-news-card__title {
+    font-size: 21px;
+  }
+
+  .inspiration-news-card__link {
+    font-size: 14px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+   480px AND BELOW
+   SHOW 1 CARD
+========================================= */
+
+@media (max-width: 480px) {
+  .inspiration-news {
+    padding: 40px 0 45px;
+  }
+
+  .inspiration-news__header {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  .inspiration-news__heading {
+    max-width: 100%;
+  }
+
+  .inspiration-news__controls {
+    gap: 6px;
+  }
+
+  .inspiration-news__controls button {
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+  }
+
+  .inspiration-news__grid {
+    --visible-cards: 1;
+    --card-gap: 20px;
+  }
+
+  .inspiration-news-card {
+    min-height: 210px;
+    padding: 22px;
+  }
+
+  .inspiration-news-card__title {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+  .inspiration-news-card__arrow {
+    font-size: 23px;
+  }
+}
+
+/* =========================================
+   EXTRA SMALL MOBILE
+   359px AND BELOW
+========================================= */
+
+@media (max-width: 359px) {
+  .inspiration-news-card {
+    padding: 20px;
+  }
+
+  .inspiration-news-card__title {
+    font-size: 19px;
+  }
+
+  .inspiration-news-card__excerpt {
+    font-size: 14px;
+  }
+
+  .inspiration-news__controls button {
+    width: 28px;
+    height: 28px;
+    font-size: 23px;
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .inspiration-news__grid,
+  .inspiration-news-card,
+  .inspiration-news-card__title a,
+  .inspiration-news-card__link,
+  .inspiration-news-card__arrow,
+  .inspiration-news__controls button {
+    transition-duration: 0ms;
+  }
+}

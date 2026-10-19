@@ -1,0 +1,248 @@
+/* =========================================
+   PODCAST HERO
+========================================= */
+
+.podcast-hero {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-height: 525px;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  background-color: var(--teal);
+  background-image: url("/images/podcast-hero.png");
+
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  color: var(--white);
+
+  box-sizing: border-box;
+}
+
+/* =========================================
+   BACKGROUND VIDEO
+========================================= */
+
+.podcast-hero__media {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  z-index: 0;
+
+  pointer-events: none;
+}
+
+/* =========================================
+   GRADIENT OVERLAY
+========================================= */
+
+.podcast-hero__overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  background: linear-gradient(
+    90deg,
+    rgba(120, 190, 0, 0.88) 0%,
+    rgba(120, 190, 0, 0.52) 38%,
+    rgba(0, 103, 122, 0.12) 72%,
+    rgba(0, 103, 122, 0.03) 100%
+  );
+
+  pointer-events: none;
+}
+
+/* =========================================
+   CONTENT CONTAINER
+========================================= */
+
+.podcast-hero__inner {
+  position: relative;
+  z-index: 2;
+
+  width: min(
+    var(--container),
+    var(--container-fallback)
+  );
+
+  margin: 0 auto;
+  padding: 70px 0;
+
+  box-sizing: border-box;
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.podcast-hero__content {
+  width: 100%;
+  max-width: 800px;
+}
+
+/* =========================================
+   HEADING
+========================================= */
+
+.podcast-hero__heading {
+  margin: 0 0 15px;
+
+  color: var(--white);
+
+  font-family: var(--var-font-heading);
+}
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.podcast-hero__description {
+  /* max-width: 480px; */
+  margin: 0 0 24px;
+
+  color: var(--white);
+}
+
+/* Preserve paragraph spacing in ACF HTML */
+
+.podcast-hero__description :global(p) {
+  margin: 0;
+  color: inherit;
+}
+
+.podcast-hero__description :global(p + p) {
+  margin-top: 12px;
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.podcast-hero__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-width: 145px;
+
+  padding: 10px 17px;
+  gap: 22px;
+
+  background-color: var(--white);
+  color: var(--teal);
+
+  font-family: var(--var-font-body);
+  font-size: 15px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.podcast-hero__button:hover {
+  background-color: var(--lime);
+  color: var(--white);
+}
+
+.podcast-hero__arrow {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+  .podcast-hero {
+    min-height: 460px;
+  }
+
+  .podcast-hero__inner {
+    padding: 65px 0;
+  }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+  .podcast-hero {
+    min-height: 390px;
+  }
+
+  .podcast-hero__inner {
+    padding: 55px 0;
+  }
+
+  .podcast-hero__content {
+    max-width: 480px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+  .podcast-hero {
+    min-height: 380px;
+    background-position: center;
+  }
+
+  .podcast-hero__inner {
+    width: calc(100% - 35px);
+    padding: 50px 0;
+  }
+
+  .podcast-hero__content {
+    max-width: 100%;
+  }
+
+  .podcast-hero__overlay {
+    background: linear-gradient(
+      90deg,
+      rgba(120, 190, 0, 0.92) 0%,
+      rgba(120, 190, 0, 0.75) 55%,
+      rgba(0, 103, 122, 0.25) 100%
+    );
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+  .podcast-hero {
+    min-height: 350px;
+  }
+
+  .podcast-hero__inner {
+    padding: 45px 0;
+  }
+
+  .podcast-hero__button {
+    min-height: 42px;
+    padding: 0 15px;
+  }
+}
