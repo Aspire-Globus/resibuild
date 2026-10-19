@@ -56,6 +56,14 @@ export default function Footer({
   ========================================= */
 
   const socialIcons = footer4?.socialIcons || [];
+  const currentYear = new Date().getFullYear();
+
+const copyrightText = data?.copywriteText
+  ? data.copywriteText.replace(
+      "{year}",
+      currentYear.toString()
+    )
+  : "";
 
   return (
     <footer className={styles["site-footer"]}>
@@ -244,21 +252,21 @@ export default function Footer({
 
       {/* COPYRIGHT */}
 
-      {data?.copywriteText && (
-        <div className={styles["site-footer__copyright"]}>
+      {copyrightText && (
+      <div className={styles["site-footer__copyright"]}>
 
-          <div className={styles["site-footer__copyright-inner"]}>
+        <div className={styles["site-footer__copyright-inner"]}>
 
-            <div
-              dangerouslySetInnerHTML={{
-                __html: data.copywriteText,
-              }}
-            />
-
-          </div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: copyrightText,
+            }}
+          />
 
         </div>
-      )}
+
+      </div>
+    )}
 
     </footer>
   );

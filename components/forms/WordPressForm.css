@@ -1,0 +1,77 @@
+/* =========================================
+   FIELD VALIDATION
+========================================= */
+
+.wordpress-form-field-error {
+  border: 1px solid #d63638 !important;
+  outline: none !important;
+}
+
+.wordpress-form-error {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+
+  color: #d63638;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* Make CF7 wrapper allow error below field */
+
+.wpcf7-form-control-wrap {
+  display: block;
+  width: 100%;
+}
+
+/* =========================================
+   GENERAL ERROR
+========================================= */
+
+.wordpress-form-general-error {
+  margin-top: 15px;
+  padding: 0;
+
+  border: 0;
+
+  color: #d63638;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.wordpress-form-success-message {
+  margin-top: 15px;
+
+  color: #00677a;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.wordpress-form-loading {
+  margin-top: 12px;
+
+  color: #00677a;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Remove CF7 duplicate validation messages */
+
+.wpcf7-not-valid-tip {
+  display: none !important;
+}
+
+.wpcf7-response-output {
+  display: none !important;
+}
