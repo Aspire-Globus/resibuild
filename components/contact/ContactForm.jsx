@@ -31,10 +31,16 @@ export default function ContactForm({ data }) {
 
   return (
     <section className={styles["contact-form-section"]}>
-      <div className={styles["contact-form-section__container"]}>
+      <div
+        className={
+          styles["contact-form-section__container"]
+        }
+      >
         {data.heading && (
           <h2
-            className={styles["contact-form-section__heading"]}
+            className={
+              styles["contact-form-section__heading"]
+            }
             dangerouslySetInnerHTML={{
               __html: decodeHtml(data.heading),
             }}
@@ -42,10 +48,16 @@ export default function ContactForm({ data }) {
         )}
 
         {cleanFormHtml && (
-          <div className={styles["contact-form-section__form"]}>
+          <div
+            className={
+              styles["contact-form-section__form"]
+            }
+          >
             <WordPressForm
               html={cleanFormHtml}
-              className={styles["contact-form-wrapper"]}
+              className={
+                styles["contact-form-wrapper"]
+              }
               successType="redirect"
             />
           </div>

@@ -1,8 +1,8 @@
-
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+
 
 export default function WordPressForm({
   html = "",
@@ -10,82 +10,350 @@ export default function WordPressForm({
   successType = "redirect",
 }) {
   const router = useRouter();
+  const containerRef = useRef(null);
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleSubmit = async (event) => {
-    const form = event.target;
+  /* =========================================
+     DISABLE BROWSER NATIVE VALIDATION
+  ========================================= */
 
-    if (!(form instanceof HTMLFormElement)) {
-      return;
-    }
+  useEffect(() => {
+    const container = containerRef.current;
 
-    event.preventDefault();
+    if (!container) return;
 
-    if (loading) return;
+    const forms = container.querySelectorAll("form");
 
-    setLoading(true);
-    setMessage("");
+    forms.forEach((form) => {
+      form.setAttribute("novalidate", "novalidate");
+      form.noValidate = true;
+    });
 
-    try {
-      const formData = new FormData(form);
+    const fields = container.querySelectorAll(
+      "input, textarea, select"
+    );
 
-      // CF7 normally provides this hidden field.
-      const formId =
-        formData.get("_wpcf7") ||
-        form.getAttribute("data-wpcf7-id") ||
-        "";
+    const handleInput = (event) => {
+      clearFieldError(event.target);
+    };
 
-      if (!formId) {
-        throw new Error(
-          "Form ID is missing. Check the WordPress form HTML."
-        );
-      }
+    fields.forEach((field) => {
+      field.addEventListener("input", handleInput);
+      field.addEventListener("change", handleInput);
+    });
 
-      formData.set("formId", String(formId));
+    return () => {
+      fields.forEach((field) => {
+        field.removeEventListener("input", handleInput);
+        field.removeEventListener("change", handleInput);
+      });
+    };
+  }, [html]);
 
-      const response = await fetch(
-        "/api/contact-form",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+  /* =========================================
+     REMOVE FIELD ERROR
+  ========================================= */
 
-      const result = await response.json();
+  const clearFieldError = (field) => {
+    if (!field) return;
 
-      if (!response.ok || !result.success) {
-        throw new Error(
-          result.message ||
-          "Unable to submit the form."
-        );
-      }
+    field.classList.remove("wordpress-form-field-error");
+    field.removeAttribute("aria-invalid");
 
-      if (successType === "redirect") {
-        router.push("/thank-you/");
-        return;
-      }
+    const wrapper =
+      field.closest(".wpcf7-form-control-wrap") ||
+      field.parentElement;
 
-      form.reset();
+    if (!wrapper) return;
 
-      setSuccess(true);
-      setMessage(
-        "Thank you for subscribing! You have successfully subscribed to our newsletter."
-      );
-    } catch (error) {
-      setMessage(
-        error.message ||
-        "Submission failed. Please try again."
-      );
-    } finally {
-      setLoading(false);
+    const error = wrapper.querySelector(
+      ".wordpress-form-error"
+    );
+
+    if (error) {
+      error.remove();
     }
   };
 
+  /* =========================================
+     ADD FIELD ERROR
+  ========================================= */
+
+  const showFieldError = (field, messageText) => {
+    if (!field) return;
+
+    clearFieldError(field);
+
+    field.classList.add("wordpress-form-field-error");
+    field.setAttribute("aria-invalid", "true");
+
+    const wrapper =
+      field.closest(".wpcf7-form-control-wrap") ||
+      field.parentElement;
+
+    if (!wrapper) return;
+
+    const errorElement = document.createElement("span");
+
+    errorElement.className = "wordpress-form-error";
+    errorElement.setAttribute("role", "alert");
+    errorElement.textContent = messageText;
+
+    wrapper.appendChild(errorElement);
+  };
+
+  /* =========================================
+     EMAIL VALIDATION
+  ========================================= */
+
+  const isValidEmail = (value) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  };
+
+  /* =========================================
+     PHONE VALIDATION
+  ========================================= */
+
+  const isValidPhone = (value) => {
+    /*
+      Allows:
+      9876543210
+      +1 212 555 1234
+      (212) 555-1234
+      +44 20 7946 0958
+
+      Requires 10-15 actual digits.
+    */
+
+    const allowedCharacters =
+      /^[0-9+\-()\s.]+$/;
+
+    if (!allowedCharacters.test(value)) {
+      return false;
+    }
+
+    const digits = value.replace(/\D/g, "");
+
+    return digits.length >= 10 && digits.length <= 15;
+  };
+
+  /* =========================================
+     VALIDATE FORM
+  ========================================= */
+
+  const validateForm = (form) => {
+    let isValid = true;
+    let firstInvalidField = null;
+
+    const fields = form.querySelectorAll(
+      "input:not([type='hidden']):not([type='submit']):not([type='button']), textarea, select"
+    );
+
+    fields.forEach((field) => {
+      clearFieldError(field);
+
+      const value =
+        typeof field.value === "string"
+          ? field.value.trim()
+          : "";
+
+      const type =
+        field.getAttribute("type")?.toLowerCase() || "";
+
+      const name =
+        field.getAttribute("name") || "";
+
+      const required =
+        field.hasAttribute("required") ||
+        field.getAttribute("aria-required") === "true" ||
+        field.classList.contains("wpcf7-validates-as-required");
+
+      let errorMessage = "";
+
+      /* REQUIRED */
+
+      if (required && !value) {
+        errorMessage = "This field is required.";
+      }
+
+      /* EMAIL */
+
+      if (
+        !errorMessage &&
+        value &&
+        (type === "email" ||
+          field.classList.contains(
+            "wpcf7-validates-as-email"
+          ))
+      ) {
+        if (!isValidEmail(value)) {
+          errorMessage =
+            "Please enter a valid email address.";
+        }
+      }
+
+      /* PHONE */
+
+      if (
+        !errorMessage &&
+        value &&
+        (type === "tel" ||
+          name === "tel-812" ||
+          field.classList.contains(
+            "wpcf7-validates-as-tel"
+          ))
+      ) {
+        if (!isValidPhone(value)) {
+          errorMessage =
+            "Please enter a valid phone number with 10 to 15 digits.";
+        }
+      }
+
+      if (errorMessage) {
+        isValid = false;
+
+        showFieldError(field, errorMessage);
+
+        if (!firstInvalidField) {
+          firstInvalidField = field;
+        }
+      }
+    });
+
+    if (firstInvalidField) {
+      firstInvalidField.focus();
+    }
+
+    return isValid;
+  };
+
+  /* =========================================
+     SUBMIT FORM
+  ========================================= */
+
+const handleSubmit = async (event) => {
+  const form = event.target;
+
+  if (!(form instanceof HTMLFormElement)) {
+    return;
+  }
+
+  event.preventDefault();
+
+  if (loading) return;
+
+  /*
+   * IMPORTANT:
+   * Validate BEFORE changing React state.
+   * Otherwise dangerouslySetInnerHTML re-renders
+   * and removes the manually-added field errors.
+   */
+  const valid = validateForm(form);
+
+  if (!valid) {
+    setSuccess(false);
+
+    setMessage(
+      "Please check the highlighted fields and try again."
+    );
+
+    /*
+     * React re-renders because setMessage() changes state.
+     * Re-apply validation to the NEW form DOM after render.
+     */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const currentForm =
+          containerRef.current?.querySelector("form");
+
+        if (currentForm) {
+          validateForm(currentForm);
+        }
+      });
+    });
+
+    return;
+  }
+
+  /*
+   * Form is valid.
+   * Now we can safely update state.
+   */
+  setSuccess(false);
+  setMessage("");
+  setLoading(true);
+
+  try {
+    const formData = new FormData(form);
+
+    const formId =
+      formData.get("_wpcf7") ||
+      form.getAttribute("data-wpcf7-id") ||
+      "";
+
+    if (!formId) {
+      throw new Error(
+        "Form ID is missing. Check the WordPress form HTML."
+      );
+    }
+
+    formData.set("formId", String(formId));
+
+    const response = await fetch(
+      "/api/contact-form",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(
+        result.message ||
+          "Unable to submit the form. Please check your information and try again."
+      );
+    }
+
+    /*
+     * CONTACT FORM
+     */
+    if (successType === "redirect") {
+      router.push("/thank-you/");
+      return;
+    }
+
+    /*
+     * NEWSLETTER FORM
+     */
+    form.reset();
+
+    setSuccess(true);
+
+    setMessage(
+      "Thank you for subscribing! You have successfully subscribed to our newsletter."
+    );
+  } catch (error) {
+    setSuccess(false);
+
+    setMessage(
+      error?.message ||
+        "Submission failed. Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
   return (
-    <div className={className}>
+    <div
+      ref={containerRef}
+      className={className}
+    >
       <div
         onSubmitCapture={handleSubmit}
         aria-busy={loading}
@@ -95,7 +363,10 @@ export default function WordPressForm({
       />
 
       {loading && (
-        <p role="status" className="form-loading">
+        <p
+          role="status"
+          className="wordpress-form-loading"
+        >
           Submitting, please wait...
         </p>
       )}
@@ -105,8 +376,8 @@ export default function WordPressForm({
           role={success ? "status" : "alert"}
           className={
             success
-              ? "form-success-message"
-              : "form-error-message"
+              ? "wordpress-form-success-message"
+              : "wordpress-form-general-error"
           }
         >
           {message}
