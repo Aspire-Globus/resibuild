@@ -234,99 +234,120 @@ export default function WordPressForm({
      SUBMIT FORM
   ========================================= */
 
-  const handleSubmit = async (event) => {
-    const form = event.target;
+const handleSubmit = async (event) => {
+  const form = event.target;
 
-    if (!(form instanceof HTMLFormElement)) {
-      return;
-    }
+  if (!(form instanceof HTMLFormElement)) {
+    return;
+  }
 
-    event.preventDefault();
+  event.preventDefault();
 
-    if (loading) return;
+  if (loading) return;
 
+  /*
+   * IMPORTANT:
+   * Validate BEFORE changing React state.
+   * Otherwise dangerouslySetInnerHTML re-renders
+   * and removes the manually-added field errors.
+   */
+  const valid = validateForm(form);
+
+  if (!valid) {
     setSuccess(false);
-    setMessage("");
 
-    /* CLIENT VALIDATION */
+    setMessage(
+      "Please check the highlighted fields and try again."
+    );
 
-    const valid = validateForm(form);
+    /*
+     * React re-renders because setMessage() changes state.
+     * Re-apply validation to the NEW form DOM after render.
+     */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const currentForm =
+          containerRef.current?.querySelector("form");
 
-    if (!valid) {
-      setMessage(
-        "Please check the highlighted fields and try again."
+        if (currentForm) {
+          validateForm(currentForm);
+        }
+      });
+    });
+
+    return;
+  }
+
+  /*
+   * Form is valid.
+   * Now we can safely update state.
+   */
+  setSuccess(false);
+  setMessage("");
+  setLoading(true);
+
+  try {
+    const formData = new FormData(form);
+
+    const formId =
+      formData.get("_wpcf7") ||
+      form.getAttribute("data-wpcf7-id") ||
+      "";
+
+    if (!formId) {
+      throw new Error(
+        "Form ID is missing. Check the WordPress form HTML."
       );
+    }
 
+    formData.set("formId", String(formId));
+
+    const response = await fetch(
+      "/api/contact-form",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(
+        result.message ||
+          "Unable to submit the form. Please check your information and try again."
+      );
+    }
+
+    /*
+     * CONTACT FORM
+     */
+    if (successType === "redirect") {
+      router.push("/thank-you/");
       return;
     }
 
-    setLoading(true);
+    /*
+     * NEWSLETTER FORM
+     */
+    form.reset();
 
-    try {
-      const formData = new FormData(form);
+    setSuccess(true);
 
-      const formId =
-        formData.get("_wpcf7") ||
-        form.getAttribute("data-wpcf7-id") ||
-        "";
+    setMessage(
+      "Thank you for subscribing! You have successfully subscribed to our newsletter."
+    );
+  } catch (error) {
+    setSuccess(false);
 
-      if (!formId) {
-        throw new Error(
-          "Form ID is missing. Check the WordPress form HTML."
-        );
-      }
-
-      formData.set("formId", String(formId));
-
-      const response = await fetch(
-        "/api/contact-form",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        /*
-          If backend returns invalid field information,
-          display the general message.
-        */
-
-        throw new Error(
-          result.message ||
-            "Unable to submit the form. Please check your information and try again."
-        );
-      }
-
-      /* CONTACT FORM */
-
-      if (successType === "redirect") {
-        router.push("/thank-you/");
-        return;
-      }
-
-      /* NEWSLETTER */
-
-      form.reset();
-
-      setSuccess(true);
-
-      setMessage(
-        "Thank you for subscribing! You have successfully subscribed to our newsletter."
-      );
-    } catch (error) {
-      setSuccess(false);
-
-      setMessage(
-        error?.message ||
-          "Submission failed. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    setMessage(
+      error?.message ||
+        "Submission failed. Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div
