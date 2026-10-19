@@ -6,7 +6,6 @@ import HeroWithPodcast from "../../../components/podcast/HeroWithPodcast/HeroWit
 import LatestEpisodes from "../../../components/podcast/LatestEpisodes/LatestEpisodes";
 import ThoughtLeaderCTA from "../../../components/podcast/ThoughtLeaderCTA";
 import ClientTestimonial from "../../../components/home/ClientTestimonial";
-import LinkedinFeed from "../../../components/podcast/LinkedinFeed/LinkedinFeed";
 import styles from "./PodcastTemplateTwo.module.css";
 import "./PodcastTemplateTwo.css";
 
@@ -215,11 +214,9 @@ export default async function PodcastTemplateTwo() {
         spotifyUrl={pageSpotifyUrl}
       />
 
-      <LatestEpisodes podcasts={podcasts}/>
+      <LatestEpisodes podcasts={podcasts} />
 
       {cta && <ThoughtLeaderCTA data={cta} />}
-
-      <LinkedinFeed />
 
       {testimonials.length > 0 && (
         <ClientTestimonial
