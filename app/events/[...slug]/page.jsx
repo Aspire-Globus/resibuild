@@ -1,40 +1,27 @@
 import { notFound } from "next/navigation";
 import { fetchGraphQL } from "../../../lib/graphql";
+import { EVENT_SINGLE_QUERY } from "../../../lib/queries/events";
 import { HOME_TESTIMONIALS_QUERY } from "../../../lib/queries/testimonials";
 import EventSingle from "../../../components/events/EventSingle";
 
 export const dynamic = "force-dynamic";
 
-function getWordPressUrl() {
-  const graphqlUrl =
-    process.env.WORDPRESS_GRAPHQL_URL ||
-    `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`;
+function getEventSlug(params) {
+  const slug = params?.slug;
 
-  return graphqlUrl
-    .replace(/\/graphql\/?$/, "")
-    .replace(/\/wp-json\/?$/, "")
-    .replace(/\/+$/, "");
+  return Array.isArray(slug)
+    ? slug[slug.length - 1]
+    : slug || "";
 }
 
 async function getEvent(slug) {
-  const wordpressUrl = getWordPressUrl();
+  if (!slug) return null;
 
-  const response = await fetch(
-    `${wordpressUrl}/wp-json/wp/v2/events?slug=${encodeURIComponent(slug)}&_embed`,
-    {
-      cache: "no-store",
-    }
-  );
+  const result = await fetchGraphQL(EVENT_SINGLE_QUERY, {
+    slug,
+  });
 
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch event: ${response.status}`
-    );
-  }
-
-  const events = await response.json();
-
-  return Array.isArray(events) ? events[0] || null : null;
+  return result?.events || null;
 }
 
 function stripHtml(value = "") {
@@ -46,39 +33,34 @@ function stripHtml(value = "") {
 }
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
-
-  let event = null;
+  const resolvedParams = await params;
+  const slug = getEventSlug(resolvedParams);
 
   try {
-    event = await getEvent(slug);
-  } catch (error) {
-    console.error("Event metadata error:", error.message);
-  }
+    const event = await getEvent(slug);
 
-  if (!event) {
+    if (!event) {
+      return {
+        title: "Event Not Found | Resibuild",
+      };
+    }
+
     return {
-      title: "Event Not Found | Resibuild",
+      title: `${stripHtml(event.title)} | Resibuild`,
+      description: stripHtml(event.excerpt || ""),
+    };
+  } catch {
+    return {
+      title: "Events | Resibuild",
     };
   }
-
-  return {
-    title: `${stripHtml(event.title?.rendered)} | Resibuild`,
-    description: stripHtml(event.excerpt?.rendered || ""),
-  };
 }
 
 export default async function EventSinglePage({ params }) {
-  const { slug } = await params;
+  const resolvedParams = await params;
+  const slug = getEventSlug(resolvedParams);
 
-  let event = null;
-
-  try {
-    event = await getEvent(slug);
-  } catch (error) {
-    console.error("Event detail error:", error.message);
-    throw error;
-  }
+  const event = await getEvent(slug);
 
   if (!event) {
     notFound();
@@ -91,44 +73,42 @@ export default async function EventSinglePage({ params }) {
       HOME_TESTIMONIALS_QUERY
     );
   } catch (error) {
-    console.error(
-      "Event testimonials error:",
-      error.message
-    );
+    console.error("Testimonials error:", error);
   }
 
-  const wpTestimonials =
-    testimonialsResult?.allTestimonials?.nodes || [];
+// WordPress testimonial CPT data
+const wpTestimonials =
+  testimonialsResult?.allTestimonials?.nodes || [];
 
-  const testimonials = wpTestimonials.map((item) => ({
-    id: item.databaseId,
+// Map testimonial content
+const testimonials = wpTestimonials.map((testimonial) => ({
+  id: testimonial.databaseId,
 
-    quote:
-      item.content
-        ?.replace(/<[^>]*>/g, "")
-        .replace(/&nbsp;/g, " ")
-        .trim() || "",
+  quote:
+    testimonial.content
+      ?.replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .trim() || "",
 
-    author:
-      item.testimonialFields?.clientName || "",
+  author:
+    testimonial.testimonialFields?.clientName || "",
 
-    role:
-      item.testimonialFields?.clientDesignation || "",
-  }));
+  role:
+    testimonial.testimonialFields?.clientDesignation || "",
+}));
 
-  const testimonialBackgroundImage =
-    testimonialsResult?.options
-      ?.globalTestimonialSettings
-      ?.testimonialBackgroundImage
-      ?.node?.sourceUrl || "";
+// Global background image from ACF Options Page
+const testimonialBackgroundImage =
+  testimonialsResult?.options
+    ?.globalTestimonialSettings
+    ?.testimonialBackgroundImage
+    ?.node?.sourceUrl || "";
 
   return (
     <EventSingle
       event={event}
       testimonials={testimonials}
-      testimonialBackgroundImage={
-        testimonialBackgroundImage
-      }
+      testimonialBackgroundImage={testimonialBackgroundImage}
     />
   );
 }

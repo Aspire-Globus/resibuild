@@ -4,8 +4,7 @@
 }
 
 .container {
-  width: 100%;
-  max-width: 1170px;
+  width: min(var(--container), var(--container-fallback));
   padding: 0 20px;
   margin: 0 auto;
 }
@@ -36,11 +35,6 @@
 .hero .container {
   position: relative;
   z-index: 2;
-}
-
-.heroContent {
-  max-width: 800px;
-  padding: 65px 0;
 }
 
 .heroDate {
@@ -95,8 +89,8 @@
 
 .contentGrid {
   display: grid;
-  grid-template-columns: 32% minmax(0, 1fr);
-  gap: 25px;
+  grid-template-columns: 28% minmax(0, 1fr);
+  gap: 50px;
   align-items: start;
 }
 
@@ -163,7 +157,9 @@
   color: var(--text);
   overflow-wrap: anywhere;
 }
-
+.eventContent :global(.wp-block-comments){
+  display: none !important;
+}
 .eventContent h2,
 .eventContent h3,
 .eventContent h4,
@@ -292,10 +288,6 @@
 }
 
 @media (max-width: 1199px) {
-  .container {
-    max-width: 960px;
-  }
-
   .detailsSection {
     padding: 65px 0 75px;
   }
@@ -306,10 +298,6 @@
 }
 
 @media (max-width: 991px) {
-  .container {
-    max-width: 720px;
-  }
-
   .hero {
     min-height: 250px;
   }
@@ -337,11 +325,6 @@
 }
 
 @media (max-width: 767px) {
-  .container {
-    max-width: 100%;
-    padding: 0 15px;
-  }
-
   .hero {
     min-height: 210px;
   }

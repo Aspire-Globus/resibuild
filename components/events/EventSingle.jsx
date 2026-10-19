@@ -1,71 +1,56 @@
 import ClientTestimonial from "../home/ClientTestimonial";
 import styles from "./EventSingle.module.css";
-
-function formatDate(date) {
-  if (!date) return "";
-
-  const parsed = new Date(date);
-
-  if (Number.isNaN(parsed.getTime())) {
-    return date;
-  }
-
-  return parsed.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
-
+import Comments from "../common/Comments/Comments";
 export default function EventSingle({
   event,
   testimonials = [],
   testimonialBackgroundImage = "",
 }) {
-  const acf = event?.acf || {};
+  const acf = event?.eventsPostType || {};
 
-  const banner = acf.banner_section || {};
-  const about = acf.about_section || {};
+  const banner = acf.bannerSection || {};
+  const about = acf.aboutSection || {};
   const sidebar = acf.sidebar || {};
 
   const featuredImage =
-    event?._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "";
+    event?.featuredImage?.node?.sourceUrl || "";
+
+  const featuredImageAlt =
+    event?.featuredImage?.node?.altText || "";
 
   const heroTitle =
-    banner.heading ||
-    event?.title?.rendered ||
-    "";
+    banner.heading || event?.title || "";
 
   const heroDate =
-    banner.sub_heading ||
-    sidebar.date ||
-    formatDate(event?.date);
+    banner.subHeading || sidebar.date || "";
 
   const aboutImage =
-    about.image?.url ||
-    about.image?.sizes?.large ||
-    featuredImage;
+    about.image?.node?.sourceUrl || featuredImage;
+
+  const aboutImageAlt =
+    about.image?.node?.altText ||
+    featuredImageAlt ||
+    "Resibuild event";
 
   const aboutTitle =
-    about.about_title || "About the event";
+    about.aboutTitle || "About the event";
 
   const aboutDescription =
     about.description || "";
 
   const eventContent =
-    event?.content?.rendered || "";
+    event?.content || "";
 
-  const sidebarDays =
-    Array.isArray(sidebar.days)
-      ? sidebar.days
-      : [];
+  const sidebarDays = Array.isArray(sidebar.days)
+    ? sidebar.days
+    : [];
 
   const hasSidebar = Boolean(
     sidebar.event ||
     sidebar.category ||
     sidebar.location ||
     sidebar.date ||
-    sidebarDays.length > 0
+    sidebarDays.length
   );
 
   return (
@@ -107,11 +92,7 @@ export default function EventSingle({
                 <div className={styles.aboutImage}>
                   <img
                     src={aboutImage}
-                    alt={
-                      about.image?.alt ||
-                      event?.title?.rendered?.replace(/<[^>]*>/g, "") ||
-                      "Resibuild event"
-                    }
+                    alt={aboutImageAlt}
                   />
                 </div>
               )}
@@ -121,7 +102,7 @@ export default function EventSingle({
               )}
 
               {aboutDescription && (
-                <div
+                <p
                   className={styles.aboutDescription}
                   dangerouslySetInnerHTML={{
                     __html: aboutDescription,
@@ -143,28 +124,28 @@ export default function EventSingle({
                         {sidebar.event && (
                           <li>
                             <h4>Event:</h4>
-                            <span>{sidebar.event}</span>
+                            <p>{sidebar.event}</p>
                           </li>
                         )}
 
                         {sidebar.category && (
                           <li>
                             <h4>Category:</h4>
-                            <span>{sidebar.category}</span>
+                            <p>{sidebar.category}</p>
                           </li>
                         )}
 
-                        {sidebarDays.map((day, index) => (
+                        {sidebarDays.map((item, index) => (
                           <li key={index}>
-                            <h4>{day.day}</h4>
-                            <span>{day.event}</span>
+                            <h4>{item.day}</h4>
+                            <p>{item.event}</p>
                           </li>
                         ))}
 
                         {sidebar.location && (
                           <li>
                             <h4>Location:</h4>
-                            <div
+                            <p
                               dangerouslySetInnerHTML={{
                                 __html: sidebar.location,
                               }}
@@ -175,7 +156,7 @@ export default function EventSingle({
                         {sidebar.date && (
                           <li>
                             <h4>Date:</h4>
-                            <span>{sidebar.date}</span>
+                            <p>{sidebar.date}</p>
                           </li>
                         )}
                       </ul>
@@ -193,6 +174,16 @@ export default function EventSingle({
                     }}
                   />
                 )}
+
+                <Comments
+                  postId={event.databaseId}
+                  comments={event.comments?.nodes || []}
+                  commentsOpen={
+                    event.commentStatus == null
+                      ? true
+                      : String(event.commentStatus).toLowerCase() === "open"
+                  }
+                />
               </div>
             </div>
           </div>

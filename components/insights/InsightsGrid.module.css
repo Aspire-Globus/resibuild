@@ -15,10 +15,7 @@
 ========================================= */
 
 .insights-listing__container {
-  width: min(
-    var(--container),
-    var(--container-fallback)
-  );
+  width: min(var(--container), var(--container-fallback));
   margin: 0 auto;
 }
 

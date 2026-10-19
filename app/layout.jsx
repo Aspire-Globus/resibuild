@@ -7,9 +7,19 @@ import { fetchGraphQL } from "../lib/graphql";
 import { GLOBAL_QUERY } from "../lib/queries/global";
 
 export const metadata = {
-  title: "Resibuild",
+   title: "Resibuild",
   description:
     "Construction events, CPD courses, podcasts and industry insights.",
+  icons: {
+    icon: [
+      {
+        url: "/images/Resifavicon.png",
+        sizes: "any",
+      },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default async function RootLayout({ children }) {
