@@ -22,7 +22,8 @@
   width: min(var(--container), var(--container-fallback));
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 177px 1fr 255px;
+  grid-template-columns: 177px minmax(0, 900px) 255px;
+  justify-content: space-between;
   align-items: center;
   gap: 20px;
   padding: 30px 0;
@@ -42,7 +43,7 @@
 
 .site-header__nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   gap: 30px;
 }

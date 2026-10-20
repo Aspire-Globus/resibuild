@@ -313,36 +313,3 @@ p{
   }
 }
 /* end css */
-.wordpress-form-field-error {
-  border: 1px solid #d63638 !important;
-  outline: none !important;
-}
-
-.wordpress-form-error {
-  display: block !important;
-  width: 100% !important;
-  margin-top: 6px !important;
-
-  color: #d63638 !important;
-  font-size: 13px !important;
-  line-height: 1.4 !important;
-  font-weight: 500 !important;
-}
-
-.wordpress-form-general-error {
-  margin-top: 15px !important;
-  padding: 0 !important;
-  border: 0 !important;
-
-  color: #d63638 !important;
-  font-size: 14px !important;
-  line-height: 1.5 !important;
-  font-weight: 500 !important;
-}
-
-.wordpress-form-error,
-.wordpress-form-error *,
-.wordpress-form-general-error,
-.wordpress-form-general-error * {
-  color: #d63638 !important;
-}

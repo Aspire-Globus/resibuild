@@ -18,7 +18,7 @@ export const metadata = {
         sizes: "any",
       },
     ],
-    shortcut: "/favicon.ico",
+    shortcut: "/images/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
 };

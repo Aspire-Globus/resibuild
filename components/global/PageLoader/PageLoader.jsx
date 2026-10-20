@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import "./PageLoader.css";
+import styles from "./PageLoader.module.css";
 
 export default function PageLoader() {
   const [loading, setLoading] = useState(true);
@@ -32,14 +32,14 @@ export default function PageLoader() {
 
   return (
     <div
-      className={`global-page-loader ${
-        hide ? "global-page-loader--hide" : ""
+      className={`${styles.globalPageLoader} ${
+        hide ? styles.globalPageLoaderHide : ""
       }`}
     >
       <img
         src="https://rajwinderk6.sg-host.com/wp-content/uploads/2026/10/logo.png"
         alt="Resibuild"
-        className="global-page-loader__logo"
+        className={styles.globalPageLoaderLogo}
       />
     </div>
   );

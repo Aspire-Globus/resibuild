@@ -198,6 +198,7 @@ const copyrightText = data?.copywriteText
                 html={footer4.newsletter}
                 className={styles["site-footer__newsletter"]}
                 successType="inline"
+                formType="newsletter"
               />
             )}
 

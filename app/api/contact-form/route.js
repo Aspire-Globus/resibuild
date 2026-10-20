@@ -50,6 +50,9 @@ export async function POST(request) {
     });
 
     const result = await response.json();
+    console.log("CF7 Form ID:", formId);
+console.log("CF7 HTTP Status:", response.status);
+console.log("CF7 Response:", result);
 
     return NextResponse.json(
       {
