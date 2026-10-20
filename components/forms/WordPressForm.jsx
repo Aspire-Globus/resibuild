@@ -2,12 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import "./WordPressForm.css";
 
 
 export default function WordPressForm({
   html = "",
   className = "",
   successType = "redirect",
+  formType = "contact",
 }) {
   const router = useRouter();
   const containerRef = useRef(null);
@@ -56,60 +58,110 @@ export default function WordPressForm({
   /* =========================================
      REMOVE FIELD ERROR
   ========================================= */
+const clearFieldError = (field) => {
+  if (!field) return;
 
-  const clearFieldError = (field) => {
-    if (!field) return;
+  field.classList.remove("wordpress-form-field-error");
+  field.removeAttribute("aria-invalid");
 
-    field.classList.remove("wordpress-form-field-error");
-    field.removeAttribute("aria-invalid");
+  // NEWSLETTER FORM
+  if (formType === "newsletter") {
+    const newsletterForm = field.closest(".newsletter-form");
 
-    const wrapper =
-      field.closest(".wpcf7-form-control-wrap") ||
-      field.parentElement;
+    if (newsletterForm) {
+      newsletterForm
+        .querySelectorAll(".wordpress-form-error")
+        .forEach((error) => error.remove());
 
-    if (!wrapper) return;
-
-    const error = wrapper.querySelector(
-      ".wordpress-form-error"
-    );
-
-    if (error) {
-      error.remove();
+      return;
     }
-  };
+  }
 
+  // CONTACT FORM
+  const wrapper =
+    field.closest(".wpcf7-form-control-wrap") ||
+    field.parentElement;
+
+  if (!wrapper) return;
+
+  const error = wrapper.querySelector(
+    ".wordpress-form-error"
+  );
+
+  if (error) {
+    error.remove();
+  }
+};
   /* =========================================
      ADD FIELD ERROR
   ========================================= */
 
+  // const showFieldError = (field, messageText) => {
+  //   if (!field) return;
+
+  //   clearFieldError(field);
+
+  //   field.classList.add("wordpress-form-field-error");
+  //   field.setAttribute("aria-invalid", "true");
+
+  //   const wrapper =
+  //     field.closest(".wpcf7-form-control-wrap") ||
+  //     field.parentElement;
+
+  //   if (!wrapper) return;
+
+  //   const errorElement = document.createElement("span");
+
+  //   errorElement.className = "wordpress-form-error";
+  //   errorElement.setAttribute("role", "alert");
+  //   errorElement.textContent = messageText;
+
+  //   wrapper.appendChild(errorElement);
+  // };
+
   const showFieldError = (field, messageText) => {
-    if (!field) return;
+  if (!field) return;
 
-    clearFieldError(field);
+  clearFieldError(field);
 
-    field.classList.add("wordpress-form-field-error");
-    field.setAttribute("aria-invalid", "true");
+  field.classList.add("wordpress-form-field-error");
+  field.setAttribute("aria-invalid", "true");
 
-    const wrapper =
-      field.closest(".wpcf7-form-control-wrap") ||
-      field.parentElement;
+  const errorElement = document.createElement("span");
 
-    if (!wrapper) return;
+  errorElement.className = "wordpress-form-error";
+  errorElement.setAttribute("role", "alert");
+  errorElement.textContent = messageText;
 
-    const errorElement = document.createElement("span");
+  // NEWSLETTER FORM
+  if (formType === "newsletter") {
+    const newsletterForm = field.closest(".newsletter-form");
 
-    errorElement.className = "wordpress-form-error";
-    errorElement.setAttribute("role", "alert");
-    errorElement.textContent = messageText;
+    if (newsletterForm) {
+      newsletterForm
+        .querySelectorAll(".wordpress-form-error")
+        .forEach((error) => error.remove());
 
-    wrapper.appendChild(errorElement);
-  };
+      newsletterForm.appendChild(errorElement);
+      return;
+    }
+  }
 
+  // CONTACT FORM
+  const wrapper =
+    field.closest(".wpcf7-form-control-wrap") ||
+    field.parentElement;
+
+  if (!wrapper) return;
+
+  wrapper.appendChild(errorElement);
+};
   /* =========================================
      EMAIL VALIDATION
   ========================================= */
 
   const isValidEmail = (value) => {
+    // return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   };
 

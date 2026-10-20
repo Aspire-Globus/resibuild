@@ -202,11 +202,6 @@
 .contact-form-wrapper :global(input[type="radio"]) {
   accent-color: var(--teal);
 }
-
-.contact-form-wrapper :global(.wpcf7-spinner) {
-  margin: 0 10px;
-}
-
 @media (max-width: 1199px) {
   .contact-form-section {
     padding: 60px 0;

@@ -1,4 +1,4 @@
-.route-page-loader {
+.routePageLoader {
   position: fixed;
   inset: 0;
 
@@ -14,7 +14,7 @@
   z-index: 999999;
 }
 
-.route-page-loader__logo {
+.routePageLoaderLogo {
   display: block;
 
   width: 220px;
@@ -36,9 +36,9 @@
     opacity: 1;
   }
 }
- 
+
 @media (max-width: 767px) {
-  .route-page-loader__logo {
+  .routePageLoaderLogo {
     width: 170px;
   }
 }
