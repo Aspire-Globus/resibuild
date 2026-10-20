@@ -1,11 +1,16 @@
 import "./globals.css";
 
+import { unstable_rethrow } from "next/navigation";
+
 import Header from "../components/global/header/Header";
 import Footer from "../components/global/footer/Footer";
 import PageLoader from "../components/global/PageLoader/PageLoader";
 
 import { fetchGraphQL } from "../lib/graphql";
 import { GLOBAL_QUERY } from "../lib/queries/global";
+
+export const dynamic = "force-dynamic";
+
 
 export const metadata = {
   title: "Resibuild",
@@ -29,9 +34,13 @@ export default async function RootLayout({ children }) {
   try {
     globalData = await fetchGraphQL(GLOBAL_QUERY);
   } catch (error) {
-    console.log(
+    // Allow Next.js to handle internal dynamic-rendering errors.
+    unstable_rethrow(error);
+
+    // Log genuine WordPress/GraphQL failures.
+    console.error(
       "Global GraphQL error:",
-      error.message
+      error
     );
   }
 
